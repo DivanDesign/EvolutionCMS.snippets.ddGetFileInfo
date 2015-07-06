@@ -5,8 +5,7 @@
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
- * @uses The library modx.ddTools 0.8.1.
- * @uses The snippet ddGetDocumentField 2.4.1.
+ * @uses The library modx.ddTools 0.13.
  * 
  * @param $file {string} - Имя файла (путь). @required
  * @param $docField {string} - Поле документа, содержащее путь к файлу. Default: —.
@@ -23,10 +22,8 @@
 
 //Получаем имя файла из заданного поля
 if (isset($docField)){
-	$file = $modx->runSnippet('ddGetDocumentField', array(
-		'id' => $docId,
-		'field' => $docField
-	));
+	$file = ddTools::getTemplateVarOutput(array($docField), $docId);
+	$file = $file[$docField];
 }
 
 $result = '';
