@@ -1,9 +1,11 @@
 <?php
 /**
  * ddGetFileSize.php
- * @version 1.4 (2012-08-13)
+ * @version 1.5 (2013-01-17)
  * 
  * Выводит размер файла.
+ * 
+ * @uses modx ddTools class 0.4.
  * 
  * @param file {string} - Имя файла (путь).
  * @param getField {string} - Поле документа, содержащее путь к файлу.
@@ -12,8 +14,9 @@
  * @param type {-1, 0, 1, 2} - Тип вывода размера файла. По умолчанию: 0.
  * @param prec {integer} - Количество цифр после запятой. По умолчанию: 2.
  * @param tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+filesize+] (размер файла), [+ext+] (расширение файла), [+filename+] (имя файла), [+filepath+] (путь к файлу).
+ * @param placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. По умолчанию: ''.
  * 
- * @copyright 2012, DivanDesign
+ * @copyright 2013, DivanDesign
  * http://www.DivanDesign.ru
  */
 
@@ -64,7 +67,7 @@ if (isset($file) && $file != '' && file_exists($file)){
 		$extPos = strrpos($file, '.');
 		$folPos = strrpos($file, '/');
 		
-		$result = $modx->parseChunk($tpl, array(
+		$resArr = array(
 			//Размер
 			'filesize' => $result,
 			//Расширение
@@ -73,7 +76,18 @@ if (isset($file) && $file != '' && file_exists($file)){
 			'filename' => substr($file, $folPos + 1, $extPos - $folPos - 1),
 			//Путь к файлу
 			'filepath' => substr($file, 0, $folPos),
-		), '[+', '+]');
+		);
+
+		//Если есть дополнительные данные
+		if (isset($placeholders)){
+			//Подключаем modx.ddTools
+			require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
+
+			//Разбиваем их
+			$resArr = array_merge($resArr, ddTools::explodeAssoc($placeholders));
+		}
+		
+		$result = $modx->parseChunk($tpl, $resArr, '[+', '+]');
 	}
 
 	return $result;
