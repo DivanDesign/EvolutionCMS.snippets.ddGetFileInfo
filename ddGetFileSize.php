@@ -1,14 +1,20 @@
 <?php
-/** ddGetFileSize.php v1.3 (2011-06-07)
- * Выводит размер файла
- * file - имя файла.
- * getId - id документа из которого берётся поле.
- * getField - поле документа.
- * getPublished - Опубликован ли документ, поле почты которого нужно получить. По умолчанию — да.
- * tpl -  шаблон для вывода, без шаблона возвращает размер. Плейсхолдеры: размер файла — filesize, расширение файла — ext.
- * type - тип вывода размера файла. Доступные значения: -1, 0, 1, 2. По умолчанию - 0.
- * prec - количество цифр после запятой. По умолчанию - 2.
- * Сниппет разработан студией Диван.Дизайн (www.divandesign.ru)
+/**
+ * ddGetFileSize.php
+ * @version 1.4 (2012-08-13)
+ * 
+ * Выводит размер файла.
+ * 
+ * @param file {string} - Имя файла (путь).
+ * @param getField {string} - Поле документа, содержащее путь к файлу.
+ * @param getId {integer} - Id документа из которого берётся поле.
+ * @param getPublished {0; 1} - Опубликован ли документ, поле с файлом которого нужно получить. По умолчанию: 1.
+ * @param type {-1, 0, 1, 2} - Тип вывода размера файла. По умолчанию: 0.
+ * @param prec {integer} - Количество цифр после запятой. По умолчанию: 2.
+ * @param tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+filesize+] (размер файла), [+ext+] (расширение файла), [+filename+] (имя файла), [+filepath+] (путь к файлу).
+ * 
+ * @copyright 2012, DivanDesign
+ * http://www.DivanDesign.ru
  */
 
 //Получаем имя файла из заданного поля
@@ -19,9 +25,11 @@ if (isset($getField)){
 		'field' => $getField
 	));
 }
+
 //Проверяем на существование файла
-if (!file_exists($file)) $file = ltrim($file, "/");
-if (isset($file) && $file != "" && file_exists($file)){
+if (!file_exists($file)) $file = ltrim($file, '/');
+
+if (isset($file) && $file != '' && file_exists($file)){
 	$type = isset($type) ? intval($type) : 0;
 	$prec = isset($prec) ? intval($prec) : 2;
 
@@ -47,12 +55,25 @@ if (isset($file) && $file != "" && file_exists($file)){
 			return round($size,$prec).$mas[$i];
 		}
 	}
+	
 	//Формируем строку размера файла
 	$result = ddfsize_format(filesize($file), $type, $prec);
+	
 	//Если есть tpl, то парсим или возвращаем размер
 	if (isset($tpl)){
-		$ext = substr($file, strrpos($file, '.')+1);//Копируем расширение файла
-		$result = $modx->parseChunk($tpl,array('filesize' => $result, 'ext' => $ext),'[+','+]');
+		$extPos = strrpos($file, '.');
+		$folPos = strrpos($file, '/');
+		
+		$result = $modx->parseChunk($tpl, array(
+			//Размер
+			'filesize' => $result,
+			//Расширение
+			'ext' => substr($file, $extPos + 1),
+			//Имя файла
+			'filename' => substr($file, $folPos + 1, $extPos - $folPos - 1),
+			//Путь к файлу
+			'filepath' => substr($file, 0, $folPos),
+		), '[+', '+]');
 	}
 
 	return $result;
