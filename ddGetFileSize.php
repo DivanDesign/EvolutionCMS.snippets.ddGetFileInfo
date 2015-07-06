@@ -1,20 +1,19 @@
 <?php
 /**
  * ddGetFileSize.php
- * @version 1.5 (2013-01-17)
+ * @version 1.6 (2013-08-14)
  * 
  * Выводит размер файла.
  * 
- * @uses modx ddTools class 0.4.
+ * @uses modx ddTools class 0.8.1.
  * 
- * @param file {string} - Имя файла (путь).
- * @param getField {string} - Поле документа, содержащее путь к файлу.
- * @param getId {integer} - Id документа из которого берётся поле.
- * @param getPublished {0; 1} - Опубликован ли документ, поле с файлом которого нужно получить. По умолчанию: 1.
- * @param type {-1, 0, 1, 2} - Тип вывода размера файла. По умолчанию: 0.
- * @param prec {integer} - Количество цифр после запятой. По умолчанию: 2.
- * @param tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+filesize+] (размер файла), [+ext+] (расширение файла), [+filename+] (имя файла), [+filepath+] (путь к файлу).
- * @param placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. По умолчанию: ''.
+ * @param $file {string} - Имя файла (путь). @required
+ * @param $getField {string} - Поле документа, содержащее путь к файлу.
+ * @param $getId {integer} - Id документа из которого берётся поле.
+ * @param $type {-1, 0, 1, 2} - Тип вывода размера файла. По умолчанию: 0.
+ * @param $prec {integer} - Количество цифр после запятой. По умолчанию: 2.
+ * @param $tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+filesize+] (размер файла), [+fileext+] (расширение файла), [+file+] (полный адрес файла), [+filename+] (имя файла), [+filepath+] (путь к файлу). По умолчанию: ''.
+ * @param $placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. По умолчанию: ''.
  * 
  * @copyright 2013, DivanDesign
  * http://www.DivanDesign.ru
@@ -24,7 +23,6 @@
 if (isset($getField)){
 	$file = $modx->runSnippet('ddGetDocumentField', array(
 		'id' => $getId,
-		'published' => $getPublished,
 		'field' => $getField
 	));
 }
@@ -68,10 +66,12 @@ if (isset($file) && $file != '' && file_exists($file)){
 		$folPos = strrpos($file, '/');
 		
 		$resArr = array(
+			//Полный адрес файла
+			'file' => $file,
 			//Размер
 			'filesize' => $result,
 			//Расширение
-			'ext' => substr($file, $extPos + 1),
+			'fileext' => substr($file, $extPos + 1),
 			//Имя файла
 			'filename' => substr($file, $folPos + 1, $extPos - $folPos - 1),
 			//Путь к файлу
