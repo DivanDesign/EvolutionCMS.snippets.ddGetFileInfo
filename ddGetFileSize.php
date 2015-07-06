@@ -1,13 +1,24 @@
 <?php
-/** ddGetFileSize.php v1.2 (2011-04-20)
+/** ddGetFileSize.php v1.3 (2011-06-07)
  * Выводит размер файла
  * file - имя файла.
+ * getId - id документа из которого берётся поле.
+ * getField - поле документа.
+ * getPublished - Опубликован ли документ, поле почты которого нужно получить. По умолчанию — да.
  * tpl -  шаблон для вывода, без шаблона возвращает размер. Плейсхолдеры: размер файла — filesize, расширение файла — ext.
  * type - тип вывода размера файла. Доступные значения: -1, 0, 1, 2. По умолчанию - 0.
  * prec - количество цифр после запятой. По умолчанию - 2.
  * Сниппет разработан студией Диван.Дизайн (www.divandesign.ru)
  */
 
+//Получаем имя файла из заданного поля
+if (isset($getField)){
+	$file = $modx->runSnippet('ddGetDocumentField', array(
+		'id' => $getId,
+		'published' => $getPublished,
+		'field' => $getField
+	));
+}
 //Проверяем на существование файла
 if (!file_exists($file)) $file = ltrim($file, "/");
 if (isset($file) && $file != "" && file_exists($file)){
