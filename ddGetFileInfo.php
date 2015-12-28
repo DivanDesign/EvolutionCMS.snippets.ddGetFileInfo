@@ -5,7 +5,7 @@
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
- * @uses The library modx.ddTools 0.13.
+ * @uses The library modx.ddTools 0.15.
  * 
  * @param $file {string} - Имя файла (путь). @required
  * @param $docField {string} - Поле документа, содержащее путь к файлу. Default: —.
@@ -169,7 +169,7 @@ if (!empty($file)){
 			//Если есть дополнительные данные
 			if (isset($placeholders)){
 				//Подключаем modx.ddTools
-				require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
+				require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 				
 				//Разбиваем их
 				$resArr = array_merge($resArr, ddTools::explodeAssoc($placeholders));
