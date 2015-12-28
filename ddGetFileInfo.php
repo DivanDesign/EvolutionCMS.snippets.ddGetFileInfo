@@ -1,23 +1,22 @@
 <?php
 /**
  * ddGetFileInfo.php
- * @version 2.0 (2014-03-25)
+ * @version 2.1 (2015-12-28)
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
  * @uses The library modx.ddTools 0.15.
  * 
- * @param $file {string} - Имя файла (путь). @required
- * @param $docField {string} - Поле документа, содержащее путь к файлу. Default: —.
- * @param $docId {integer} - Id документа из которого берётся поле. Default: —.
- * @param $sizeType {-1, 0, 1, 2} - Тип вывода размера файла. Default: 0.
- * @param $sizePrec {integer} - Количество цифр после запятой. Default: 2.
- * @param $output {'size'; 'extension'; 'type'; 'name'; 'path'} - Что нужно вернуть, если не задан шаблон. Default: 'size'.
- * @param $tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: ''.
- * @param $placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
+ * @param $file {string} — Имя файла (путь). @required
+ * @param $docField {string} — Поле документа, содержащее путь к файлу. Default: —.
+ * @param $docId {integer} — Id документа из которого берётся поле. Default: —.
+ * @param $sizeType {-1|0|1|2} — Тип вывода размера файла. Default: 0.
+ * @param $sizePrec {integer} — Количество цифр после запятой. Default: 2.
+ * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
+ * @param $tpl {string: chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
+ * @param $placeholders {separated string} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Получаем имя файла из заданного поля
@@ -43,6 +42,7 @@ if (!empty($file)){
 		$sizeType = isset($sizeType) ? intval($sizeType) : 0;
 		$sizePrec = isset($sizePrec) ? intval($sizePrec) : 2;
 		
+		//TODO: Переделать на какие-то человеко-понятные ключи
 		if (!function_exists('ddfsize_format')){
 			function ddfsize_format($size, $type, $prec){
 				//устанавливаем конфигурацию вывода приставок, надеюсь разберетесь
@@ -69,6 +69,7 @@ if (!empty($file)){
 		$extPos = strrpos($file, '.');
 		$folPos = strrpos($file, '/');
 		
+		//TODO: Использовать класс «SplFileInfo»
 		$resArr = array(
 			//Полный адрес файла
 			'file' => $file,
