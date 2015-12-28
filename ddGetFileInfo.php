@@ -12,8 +12,8 @@
  * @param $docId {integer} - Id документа из которого берётся поле. Default: —.
  * @param $sizeType {-1, 0, 1, 2} - Тип вывода размера файла. Default: 0.
  * @param $sizePrec {integer} - Количество цифр после запятой. Default: 2.
- * @param $output {'size'; 'extension'; 'name'; 'path'} - Что нужно вернуть, если не задан шаблон. Default: 'size'.
- * @param $tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+size+] (размер файла), [+extension+] (расширение файла), [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу). Default: ''.
+ * @param $output {'size'; 'extension'; 'type'; 'name'; 'path'} - Что нужно вернуть, если не задан шаблон. Default: 'size'.
+ * @param $tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: ''.
  * @param $placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
  * 
  * @copyright 2014, DivanDesign
@@ -76,6 +76,8 @@ if (!empty($file)){
 			'size' => '',
 			//Расширение
 			'extension' => substr($file, $extPos + 1),
+			//«Тип» файла
+			'type' => '',
 			//Имя файла
 			'name' => substr($file, $folPos + 1, $extPos - $folPos - 1),
 			//Путь к файлу
@@ -88,6 +90,78 @@ if (!empty($file)){
 		if ($filesize){
 			//Формируем строку размера файла
 			$resArr['size'] = ddfsize_format($filesize, $sizeType, $sizePrec);
+		}
+		
+		//Пытаемся определить тип файла
+		switch (strtolower($resArr['extension'])){
+			case 'zip':
+			case '7z':
+			case 'tar':
+			case 'gz':
+			case 'rar':
+				$resArr['type'] = 'archive';
+			break;
+			
+			case 'jpg':
+			case 'jpeg':
+			case 'png':
+			case 'gif':
+			case 'bmp':
+			case 'tif':
+			case 'tiff':
+			case 'webp':
+				$resArr['type'] = 'image';
+			break;
+			
+			case 'webm':
+			case 'mkv':
+			case 'ogv':
+			case 'avi':
+			case 'wmv':
+			case 'flv':
+			case 'mpg':
+			case 'mpeg':
+			case 'mp4':
+			case 'm4v':
+				$resArr['type'] = 'video';
+			break;
+			
+			case 'flac':
+			case 'ape':
+			case 'wav':
+			case 'aiff':
+			case 'wma':
+			case 'mp3':
+			case 'oga':
+				$resArr['type'] = 'audio';
+			break;
+			
+			case 'txt':
+				$resArr['type'] = 'text';
+			break;
+			
+			case 'pdf':
+				$resArr['type'] = 'pdf';
+			break;
+			
+			case 'doc':
+			case 'docx':
+				$resArr['type'] = 'word';
+			break;
+			
+			case 'xls':
+			case 'xlsx':
+			case 'xlsm':
+			case 'xlsb':
+				$resArr['type'] = 'excel';
+			break;
+			
+			case 'ppt':
+			case 'pptx':
+			case 'pps':
+			case 'ppsx':
+				$resArr['type'] = 'powerpoint';
+			break;
 		}
 		
 		//Если есть tpl, то парсим или возвращаем размер
