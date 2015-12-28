@@ -1,32 +1,28 @@
 <?php
 /**
  * ddGetFileInfo.php
- * @version 2.0 (2014-03-25)
+ * @version 2.1 (2015-12-28)
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
- * @uses The library modx.ddTools 0.8.1.
- * @uses The snippet ddGetDocumentField 2.4.1.
+ * @uses The library modx.ddTools 0.15.
  * 
- * @param $file {string} - Имя файла (путь). @required
- * @param $docField {string} - Поле документа, содержащее путь к файлу. Default: —.
- * @param $docId {integer} - Id документа из которого берётся поле. Default: —.
- * @param $sizeType {-1, 0, 1, 2} - Тип вывода размера файла. Default: 0.
- * @param $sizePrec {integer} - Количество цифр после запятой. Default: 2.
- * @param $output {'size'; 'extension'; 'name'; 'path'} - Что нужно вернуть, если не задан шаблон. Default: 'size'.
- * @param $tpl {string: chunkName} - Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+size+] (размер файла), [+extension+] (расширение файла), [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу). Default: ''.
- * @param $placeholders {separated string} - Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
+ * @param $file {string} — Имя файла (путь). @required
+ * @param $docField {string} — Поле документа, содержащее путь к файлу. Default: —.
+ * @param $docId {integer} — Id документа из которого берётся поле. Default: —.
+ * @param $sizeType {-1|0|1|2} — Тип вывода размера файла. Default: 0.
+ * @param $sizePrec {integer} — Количество цифр после запятой. Default: 2.
+ * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
+ * @param $tpl {string: chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
+ * @param $placeholders {separated string} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Получаем имя файла из заданного поля
 if (isset($docField)){
-	$file = $modx->runSnippet('ddGetDocumentField', array(
-		'id' => $docId,
-		'field' => $docField
-	));
+	$file = ddTools::getTemplateVarOutput(array($docField), $docId);
+	$file = $file[$docField];
 }
 
 $result = '';
@@ -46,6 +42,7 @@ if (!empty($file)){
 		$sizeType = isset($sizeType) ? intval($sizeType) : 0;
 		$sizePrec = isset($sizePrec) ? intval($sizePrec) : 2;
 		
+		//TODO: Переделать на какие-то человеко-понятные ключи
 		if (!function_exists('ddfsize_format')){
 			function ddfsize_format($size, $type, $prec){
 				//устанавливаем конфигурацию вывода приставок, надеюсь разберетесь
@@ -72,6 +69,7 @@ if (!empty($file)){
 		$extPos = strrpos($file, '.');
 		$folPos = strrpos($file, '/');
 		
+		//TODO: Использовать класс «SplFileInfo»
 		$resArr = array(
 			//Полный адрес файла
 			'file' => $file,
@@ -79,6 +77,8 @@ if (!empty($file)){
 			'size' => '',
 			//Расширение
 			'extension' => substr($file, $extPos + 1),
+			//«Тип» файла
+			'type' => '',
 			//Имя файла
 			'name' => substr($file, $folPos + 1, $extPos - $folPos - 1),
 			//Путь к файлу
@@ -88,9 +88,81 @@ if (!empty($file)){
 		//Пробуем получить размер файла
 		$filesize = @filesize($file);
 		//Если вышло
-		if ($filesize){
+		if ($filesize !== false){
 			//Формируем строку размера файла
 			$resArr['size'] = ddfsize_format($filesize, $sizeType, $sizePrec);
+		}
+		
+		//Пытаемся определить тип файла
+		switch (strtolower($resArr['extension'])){
+			case 'zip':
+			case '7z':
+			case 'tar':
+			case 'gz':
+			case 'rar':
+				$resArr['type'] = 'archive';
+			break;
+			
+			case 'jpg':
+			case 'jpeg':
+			case 'png':
+			case 'gif':
+			case 'bmp':
+			case 'tif':
+			case 'tiff':
+			case 'webp':
+				$resArr['type'] = 'image';
+			break;
+			
+			case 'webm':
+			case 'mkv':
+			case 'ogv':
+			case 'avi':
+			case 'wmv':
+			case 'flv':
+			case 'mpg':
+			case 'mpeg':
+			case 'mp4':
+			case 'm4v':
+				$resArr['type'] = 'video';
+			break;
+			
+			case 'flac':
+			case 'ape':
+			case 'wav':
+			case 'aiff':
+			case 'wma':
+			case 'mp3':
+			case 'oga':
+				$resArr['type'] = 'audio';
+			break;
+			
+			case 'txt':
+				$resArr['type'] = 'text';
+			break;
+			
+			case 'pdf':
+				$resArr['type'] = 'pdf';
+			break;
+			
+			case 'doc':
+			case 'docx':
+				$resArr['type'] = 'word';
+			break;
+			
+			case 'xls':
+			case 'xlsx':
+			case 'xlsm':
+			case 'xlsb':
+				$resArr['type'] = 'excel';
+			break;
+			
+			case 'ppt':
+			case 'pptx':
+			case 'pps':
+			case 'ppsx':
+				$resArr['type'] = 'powerpoint';
+			break;
 		}
 		
 		//Если есть tpl, то парсим или возвращаем размер
@@ -98,7 +170,7 @@ if (!empty($file)){
 			//Если есть дополнительные данные
 			if (isset($placeholders)){
 				//Подключаем modx.ddTools
-				require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
+				require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 				
 				//Разбиваем их
 				$resArr = array_merge($resArr, ddTools::explodeAssoc($placeholders));
