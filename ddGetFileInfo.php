@@ -87,7 +87,7 @@ if (!empty($file)){
 		//Пробуем получить размер файла
 		$filesize = @filesize($file);
 		//Если вышло
-		if ($filesize){
+		if ($filesize !== false){
 			//Формируем строку размера файла
 			$resArr['size'] = ddfsize_format($filesize, $sizeType, $sizePrec);
 		}
