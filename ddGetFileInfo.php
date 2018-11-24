@@ -12,7 +12,7 @@
  * @param $file {string} — Имя файла (путь). @required
  * @param $file_docField {string} — Поле документа, содержащее путь к файлу. Default: —.
  * @param $file_docId {integer} — Id документа из которого берётся поле. Default: —.
- * @param $sizeNameFormat {-1|0|1|2} — Тип вывода размера файла. Default: 0.
+ * @param $sizeNameFormat {'none'|'RuShort'|'RuFull'|'EnShort'} — Формат вывода названия размера файла (MB || Мегабайт || Мб). Default: 'RuShort'.
  * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
  * @param $tpl {string_chunkName|string} — Шаблон для вывода, без шаблона возвращает просто размер (chunk name or code via “@CODE:” prefix). Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
@@ -66,10 +66,22 @@ if (!empty($file)){
 	if ($fileHandle){
 		fclose($fileHandle);
 		
-		$sizeNameFormat = isset($sizeNameFormat) ? intval($sizeNameFormat) : 0;
+		$sizeNameFormat = isset($sizeNameFormat) ? $sizeNameFormat : 'RuShort';
 		$sizePrecision = isset($sizePrecision) ? intval($sizePrecision) : 2;
 		
-		//TODO: Переделать на какие-то человеко-понятные ключи
+		//Backward compatibility
+		if (is_numeric($sizeNameFormat)){
+			$sizeNameFormat = strtr(
+				$sizeNameFormat,
+				[
+					'-1' => 'none',
+					'0' => 'RuShort',
+					'1' => 'RuFull',
+					'2' => 'EnShort',
+				]
+			);
+		}
+		
 		if (!function_exists('ddfsize_format')){
 			function ddfsize_format(
 				$size,
@@ -77,7 +89,7 @@ if (!empty($file)){
 				$prec
 			){
 				//устанавливаем конфигурацию вывода приставок, надеюсь разберетесь
-				if ($type == -1){
+				if ($type == 'none'){
 					$mas = [
 						'',
 						'',
@@ -87,7 +99,7 @@ if (!empty($file)){
 						'',
 						''
 					];
-				}else if ($type == 0){
+				}else if ($type == 'RuShort'){
 					$mas = [
 						' б',
 						' Кб',
@@ -97,7 +109,7 @@ if (!empty($file)){
 						' Пб',
 						' Эб'
 					];
-				}else if ($type == 1){
+				}else if ($type == 'RuFull'){
 					$mas = [
 						' байт',
 						' Килобайт',
@@ -107,7 +119,7 @@ if (!empty($file)){
 						' Петабайт',
 						' Эксабайт'
 					];
-				}else if ($type == 2){
+				}else if ($type == 'EnShort'){
 					$mas = [
 						' B',
 						' KB',
