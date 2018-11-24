@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetFileInfo
- * @version 2.2 (2018-11-24)
+ * @version 2.2.1 (2018-11-24)
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
@@ -289,7 +289,7 @@ if (!empty($file)){
 				);
 			}
 			
-			$resultStr = ddTools::parseText([
+			$result = ddTools::parseText([
 				'text' => $modx->getTpl($tpl),
 				'data' => $resArr
 			]);
