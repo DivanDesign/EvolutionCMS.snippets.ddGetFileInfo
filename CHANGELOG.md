@@ -1,5 +1,22 @@
 # (MODX)EvoCMS.snippets.ddGetFileSize changelog
 
+## Version 2.2 (2018-11-24)
+* \* Attention! PHP >= 5.4 is required.
+* \* Attention! MODXEvo >= 1.1 is required.
+* \* Attention! MODXEvo.libraries.ddTools >= 0.18 is required.
+* \+ Added JSON and Query string formats support for the “tpl_placeholders” parameter (with backward compatibility).
+* \+ Added support of the “@CODE:” keyword prefix in the “tpl” parameter.
+* \* The following parameters were renamed (with backward compatibility):
+	* \* “docField” → “file_docField”.
+	* \* “docId” → “file_docId”.
+	* \* “sizeType” → “sizeNameFormat”.
+	* \* “sizePrec” → “sizePrecision”.
+	* \* “placeholders” → “tpl_placeholders”.
+* \* The “sizeNameFormat” parameter changes:
+	* \* User-friendly values.
+	* \+ Added “EnFull” value.
+	* \* Is equal to “EnShort” by default.
+
 ## Version 2.1 (2015-12-28)
 * \+ Добавлен вывод типа файла (плэйсхолдер «[+type+]» при выводе через «tpl» и «type» в «output» соответственно). Удобно использовать с [Font Awesome](http://fontawesome.io/).
 * \* Нулевой размер файла выводится (не считается ошибкой filesize).

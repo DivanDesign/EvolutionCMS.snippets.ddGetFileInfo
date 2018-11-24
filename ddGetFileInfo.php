@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetFileInfo
- * @version 2.1 (2015-12-28)
+ * @version 2.2 (2018-11-24)
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
@@ -19,7 +19,7 @@
  * @param $tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. Default: ''.
  * @example &tpl_placeholders=`{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`
  * 
- * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Include MODXEvo.libraries.ddTools
