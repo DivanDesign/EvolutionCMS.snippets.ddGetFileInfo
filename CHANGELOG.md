@@ -1,5 +1,8 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
+## Version 2.2.1 (2018-11-24)
+* \* Critical variable name error was fixed.
+
 ## Version 2.2 (2018-11-24)
 * \* Attention! PHP >= 5.4 is required.
 * \* Attention! MODXEvo >= 1.1 is required.
