@@ -12,7 +12,7 @@
  * @param $file {string} — Имя файла (путь). @required
  * @param $file_docField {string} — Поле документа, содержащее путь к файлу. Default: —.
  * @param $file_docId {integer} — Id документа из которого берётся поле. Default: —.
- * @param $sizeNameFormat {'none'|'RuShort'|'RuFull'|'EnShort'} — Формат вывода названия размера файла (MB || Мегабайт || Мб). Default: 'RuShort'.
+ * @param $sizeNameFormat {'none'|'RuShort'|'RuFull'|'EnShort'|'EnFull'} — Формат вывода названия размера файла (MB || Megabyte || Мб || Мегабайт). Default: 'RuShort'.
  * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
  * @param $tpl {string_chunkName|string} — Шаблон для вывода, без шаблона возвращает просто размер (chunk name or code via “@CODE:” prefix). Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
@@ -128,6 +128,16 @@ if (!empty($file)){
 						' TB',
 						' PB',
 						' EB'
+					];
+				}else if ($type == 'EnFull'){
+					$mas = [
+						' Bytes',
+						' Kilobytes',
+						' Megabytes',
+						' Gigabytes',
+						' Terabytes',
+						' Petabytes',
+						' Exabytes'
 					];
 				}
 				
