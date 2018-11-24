@@ -1,11 +1,11 @@
 <?php
 /**
- * ddGetFileInfo.php
+ * ddGetFileInfo
  * @version 2.1 (2015-12-28)
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
- * @uses The library modx.ddTools 0.15.
+ * @uses MODXEvo.libraries.ddTools >= 0.15.
  * 
  * @param $file {string} — Имя файла (путь). @required
  * @param $docField {string} — Поле документа, содержащее путь к файлу. Default: —.
@@ -13,15 +13,18 @@
  * @param $sizeType {-1|0|1|2} — Тип вывода размера файла. Default: 0.
  * @param $sizePrec {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
- * @param $tpl {string: chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
- * @param $placeholders {separated string} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
+ * @param $tpl {string_chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
+ * @param $placeholders {string_separated} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
  * 
  * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Получаем имя файла из заданного поля
 if (isset($docField)){
-	$file = ddTools::getTemplateVarOutput(array($docField), $docId);
+	$file = ddTools::getTemplateVarOutput(
+		array($docField),
+		$docId
+	);
 	$file = $file[$docField];
 }
 
@@ -31,10 +34,16 @@ if (!empty($file)){
 	$output = isset($output) ? $output : 'size';
 	
 	//Всегда удаляем слэш слева
-	$file = ltrim($file, '/');
+	$file = ltrim(
+		$file,
+		'/'
+	);
 	
 	//Пытаемся открыть файл
-	$fileHandle = @fopen($file, 'r');
+	$fileHandle = @fopen(
+		$file,
+		'r'
+	);
 	
 	if ($fileHandle){
 		fclose($fileHandle);
@@ -44,16 +53,52 @@ if (!empty($file)){
 		
 		//TODO: Переделать на какие-то человеко-понятные ключи
 		if (!function_exists('ddfsize_format')){
-			function ddfsize_format($size, $type, $prec){
+			function ddfsize_format(
+				$size,
+				$type,
+				$prec
+			){
 				//устанавливаем конфигурацию вывода приставок, надеюсь разберетесь
 				if ($type == -1){
-					$mas = array('', '', '', '', '', '', '');
+					$mas = array(
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						''
+					);
 				}else if ($type == 0){
-					$mas = array(' б', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб', ' Эб');
+					$mas = array(
+						' б',
+						' Кб',
+						' Мб',
+						' Гб',
+						' Тб',
+						' Пб',
+						' Эб'
+					);
 				}else if ($type == 1){
-					$mas = array(' байт', ' Килобайт', ' Мегабайт', ' Гигабайт', ' Терабайт', ' Петабайт', ' Эксабайт');
+					$mas = array(
+						' байт',
+						' Килобайт',
+						' Мегабайт',
+						' Гигабайт',
+						' Терабайт',
+						' Петабайт',
+						' Эксабайт'
+					);
 				}else if ($type == 2){
-					$mas = array(' B', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB');
+					$mas = array(
+						' B',
+						' KB',
+						' MB',
+						' GB',
+						' TB',
+						' PB',
+						' EB'
+					);
 				}
 				
 				$i = 0;
@@ -62,12 +107,21 @@ if (!empty($file)){
 					$i++;
 				}
 				
-				return round($size, $prec).$mas[$i];
+				return round(
+					$size,
+					$prec
+				).$mas[$i];
 			}
 		}
 		
-		$extPos = strrpos($file, '.');
-		$folPos = strrpos($file, '/');
+		$extPos = strrpos(
+			$file,
+			'.'
+		);
+		$folPos = strrpos(
+			$file,
+			'/'
+		);
 		
 		//TODO: Использовать класс «SplFileInfo»
 		$resArr = array(
@@ -76,13 +130,24 @@ if (!empty($file)){
 			//Размер
 			'size' => '',
 			//Расширение
-			'extension' => substr($file, $extPos + 1),
+			'extension' => substr(
+				$file,
+				$extPos + 1
+			),
 			//«Тип» файла
 			'type' => '',
 			//Имя файла
-			'name' => substr($file, $folPos + 1, $extPos - $folPos - 1),
+			'name' => substr(
+				$file,
+				$folPos + 1,
+				$extPos - $folPos - 1
+			),
 			//Путь к файлу
-			'path' => substr($file, 0, $folPos),
+			'path' => substr(
+				$file,
+				0,
+				$folPos
+			),
 		);
 		
 		//Пробуем получить размер файла
@@ -90,7 +155,11 @@ if (!empty($file)){
 		//Если вышло
 		if ($filesize !== false){
 			//Формируем строку размера файла
-			$resArr['size'] = ddfsize_format($filesize, $sizeType, $sizePrec);
+			$resArr['size'] = ddfsize_format(
+				$filesize,
+				$sizeType,
+				$sizePrec
+			);
 		}
 		
 		//Пытаемся определить тип файла
@@ -173,10 +242,18 @@ if (!empty($file)){
 				require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 				
 				//Разбиваем их
-				$resArr = array_merge($resArr, ddTools::explodeAssoc($placeholders));
+				$resArr = array_merge(
+					$resArr,
+					ddTools::explodeAssoc($placeholders)
+				);
 			}
 			
-			$result = $modx->parseChunk($tpl, $resArr, '[+', '+]');
+			$result = $modx->parseChunk(
+				$tpl,
+				$resArr,
+				'[+',
+				'+]'
+			);
 		}else{
 			$result = $resArr[$output];
 		}
