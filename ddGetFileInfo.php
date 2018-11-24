@@ -12,7 +12,7 @@
  * @param $file {string} — Имя файла (путь). @required
  * @param $file_docField {string} — Поле документа, содержащее путь к файлу. Default: —.
  * @param $file_docId {integer} — Id документа из которого берётся поле. Default: —.
- * @param $sizeNameFormat {'none'|'RuShort'|'RuFull'|'EnShort'|'EnFull'} — Формат вывода названия размера файла (MB || Megabyte || Мб || Мегабайт). Default: 'RuShort'.
+ * @param $sizeNameFormat {'none'|'EnShort'|'EnFull'|'RuShort'|'RuFull'} — Формат вывода названия размера файла (MB || Megabyte || Мб || Мегабайт). Default: 'EnShort'.
  * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
  * @param $tpl {string_chunkName|string} — Шаблон для вывода, без шаблона возвращает просто размер (chunk name or code via “@CODE:” prefix). Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
@@ -66,7 +66,7 @@ if (!empty($file)){
 	if ($fileHandle){
 		fclose($fileHandle);
 		
-		$sizeNameFormat = isset($sizeNameFormat) ? $sizeNameFormat : 'RuShort';
+		$sizeNameFormat = isset($sizeNameFormat) ? $sizeNameFormat : 'EnShort';
 		$sizePrecision = isset($sizePrecision) ? intval($sizePrecision) : 2;
 		
 		//Backward compatibility
