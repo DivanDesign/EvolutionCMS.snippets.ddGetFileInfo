@@ -5,6 +5,7 @@
  * 
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
+ * @uses PHP >= 5.4.
  * @uses MODXEvo.libraries.ddTools >= 0.15.
  * 
  * @param $file {string} — Имя файла (путь). @required
@@ -22,7 +23,7 @@
 //Получаем имя файла из заданного поля
 if (isset($docField)){
 	$file = ddTools::getTemplateVarOutput(
-		array($docField),
+		[$docField],
 		$docId
 	);
 	$file = $file[$docField];
@@ -60,7 +61,7 @@ if (!empty($file)){
 			){
 				//устанавливаем конфигурацию вывода приставок, надеюсь разберетесь
 				if ($type == -1){
-					$mas = array(
+					$mas = [
 						'',
 						'',
 						'',
@@ -68,9 +69,9 @@ if (!empty($file)){
 						'',
 						'',
 						''
-					);
+					];
 				}else if ($type == 0){
-					$mas = array(
+					$mas = [
 						' б',
 						' Кб',
 						' Мб',
@@ -78,9 +79,9 @@ if (!empty($file)){
 						' Тб',
 						' Пб',
 						' Эб'
-					);
+					];
 				}else if ($type == 1){
-					$mas = array(
+					$mas = [
 						' байт',
 						' Килобайт',
 						' Мегабайт',
@@ -88,9 +89,9 @@ if (!empty($file)){
 						' Терабайт',
 						' Петабайт',
 						' Эксабайт'
-					);
+					];
 				}else if ($type == 2){
-					$mas = array(
+					$mas = [
 						' B',
 						' KB',
 						' MB',
@@ -98,7 +99,7 @@ if (!empty($file)){
 						' TB',
 						' PB',
 						' EB'
-					);
+					];
 				}
 				
 				$i = 0;
@@ -124,7 +125,7 @@ if (!empty($file)){
 		);
 		
 		//TODO: Использовать класс «SplFileInfo»
-		$resArr = array(
+		$resArr = [
 			//Полный адрес файла
 			'file' => $file,
 			//Размер
@@ -148,7 +149,7 @@ if (!empty($file)){
 				0,
 				$folPos
 			),
-		);
+		];
 		
 		//Пробуем получить размер файла
 		$filesize = @filesize($file);
