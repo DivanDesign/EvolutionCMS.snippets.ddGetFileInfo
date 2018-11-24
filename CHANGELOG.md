@@ -1,4 +1,4 @@
-# (MODX)EvolutionCMS.snippets.ddGetFileSize changelog
+# (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 ## Version 2.2 (2018-11-24)
 * \* Attention! PHP >= 5.4 is required.
