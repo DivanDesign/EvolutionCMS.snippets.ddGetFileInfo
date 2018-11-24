@@ -289,7 +289,7 @@ if (!empty($file)){
 				);
 			}
 			
-			$resultStr = ddTools::parseText([
+			$result = ddTools::parseText([
 				'text' => $modx->getTpl($tpl),
 				'data' => $resArr
 			]);
