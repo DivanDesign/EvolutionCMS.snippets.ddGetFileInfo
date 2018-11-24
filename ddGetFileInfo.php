@@ -6,6 +6,7 @@
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
  * @uses PHP >= 5.4.
+ * @uses MODXEvo >= 1.1.
  * @uses MODXEvo.libraries.ddTools >= 0.18.
  * 
  * @param $file {string} — Имя файла (путь). @required
@@ -14,7 +15,7 @@
  * @param $sizeNameFormat {-1|0|1|2} — Тип вывода размера файла. Default: 0.
  * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
- * @param $tpl {string_chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
+ * @param $tpl {string_chunkName|string} — Шаблон для вывода, без шаблона возвращает просто размер (chunk name or code via “@CODE:” prefix). Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
  * @param $tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. Default: ''.
  * @example &tpl_placeholders=`{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`
  * 
@@ -266,12 +267,10 @@ if (!empty($file)){
 				);
 			}
 			
-			$result = $modx->parseChunk(
-				$tpl,
-				$resArr,
-				'[+',
-				'+]'
-			);
+			$resultStr = ddTools::parseText([
+				'text' => $modx->getTpl($tpl),
+				'data' => $resArr
+			]);
 		}else{
 			$result = $resArr[$output];
 		}
