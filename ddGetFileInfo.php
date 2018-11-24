@@ -9,24 +9,39 @@
  * @uses MODXEvo.libraries.ddTools >= 0.15.
  * 
  * @param $file {string} — Имя файла (путь). @required
- * @param $docField {string} — Поле документа, содержащее путь к файлу. Default: —.
- * @param $docId {integer} — Id документа из которого берётся поле. Default: —.
- * @param $sizeType {-1|0|1|2} — Тип вывода размера файла. Default: 0.
- * @param $sizePrec {integer} — Количество цифр после запятой. Default: 2.
+ * @param $file_docField {string} — Поле документа, содержащее путь к файлу. Default: —.
+ * @param $file_docId {integer} — Id документа из которого берётся поле. Default: —.
+ * @param $sizeNameFormat {-1|0|1|2} — Тип вывода размера файла. Default: 0.
+ * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
  * @param $tpl {string_chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
- * @param $placeholders {string_separated} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
+ * @param $tpl_placeholders {string_separated} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
  * 
  * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
+//Include MODXEvo.libraries.ddTools
+require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+
+//Backward compatibility
+extract(ddTools::verifyRenamedParams(
+	$params,
+	[
+		'file_docField' => 'docField',
+		'file_docId' => 'docId',
+		'sizeNameFormat' => 'sizeType',
+		'sizePrecision' => 'sizePrec',
+		'tpl_placeholders' => 'placeholders'
+	]
+));
+
 //Получаем имя файла из заданного поля
-if (isset($docField)){
+if (isset($file_docField)){
 	$file = ddTools::getTemplateVarOutput(
-		[$docField],
-		$docId
+		[$file_docField],
+		$file_docId
 	);
-	$file = $file[$docField];
+	$file = $file[$file_docField];
 }
 
 $result = '';
@@ -49,8 +64,8 @@ if (!empty($file)){
 	if ($fileHandle){
 		fclose($fileHandle);
 		
-		$sizeType = isset($sizeType) ? intval($sizeType) : 0;
-		$sizePrec = isset($sizePrec) ? intval($sizePrec) : 2;
+		$sizeNameFormat = isset($sizeNameFormat) ? intval($sizeNameFormat) : 0;
+		$sizePrecision = isset($sizePrecision) ? intval($sizePrecision) : 2;
 		
 		//TODO: Переделать на какие-то человеко-понятные ключи
 		if (!function_exists('ddfsize_format')){
@@ -158,8 +173,8 @@ if (!empty($file)){
 			//Формируем строку размера файла
 			$resArr['size'] = ddfsize_format(
 				$filesize,
-				$sizeType,
-				$sizePrec
+				$sizeNameFormat,
+				$sizePrecision
 			);
 		}
 		
@@ -238,14 +253,11 @@ if (!empty($file)){
 		//Если есть tpl, то парсим или возвращаем размер
 		if (isset($tpl)){
 			//Если есть дополнительные данные
-			if (isset($placeholders)){
-				//Подключаем modx.ddTools
-				require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
-				
+			if (isset($tpl_placeholders)){
 				//Разбиваем их
 				$resArr = array_merge(
 					$resArr,
-					ddTools::explodeAssoc($placeholders)
+					ddTools::explodeAssoc($tpl_placeholders)
 				);
 			}
 			
