@@ -6,7 +6,7 @@
  * @desc Выводит информацию о фале: размер, имя, расширение и пр.
  * 
  * @uses PHP >= 5.4.
- * @uses MODXEvo.libraries.ddTools >= 0.15.
+ * @uses MODXEvo.libraries.ddTools >= 0.18.
  * 
  * @param $file {string} — Имя файла (путь). @required
  * @param $file_docField {string} — Поле документа, содержащее путь к файлу. Default: —.
@@ -15,7 +15,8 @@
  * @param $sizePrecision {integer} — Количество цифр после запятой. Default: 2.
  * @param $output {'size'|'extension'|'type'|'name'|'path'} — Что нужно вернуть, если не задан шаблон. Default: 'size'.
  * @param $tpl {string_chunkName} — Шаблон для вывода, без шаблона возвращает просто размер. Доступные плэйсхолдеры: [+file+] (полный адрес файла), [+name+] (имя файла), [+path+] (путь к файлу), [+size+] (размер файла), [+extension+] (расширение файла), [+type+] (тип файла: 'archive', 'image', 'video', 'audio', 'text', 'pdf', 'word', 'excel', 'powerpoint', ''). Default: —.
- * @param $tpl_placeholders {string_separated} — Дополнительные данные, которые необходимо передать в чанк «tpl». Формат: строка, разделённая '::' между парой ключ-значение и '||' между парами. Default: ''.
+ * @param $tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. Default: ''.
+ * @example &tpl_placeholders=`{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`
  * 
  * @copyright 2010–2015 DivanDesign {@link http://www.DivanDesign.biz }
  */
@@ -254,10 +255,14 @@ if (!empty($file)){
 		if (isset($tpl)){
 			//Если есть дополнительные данные
 			if (isset($tpl_placeholders)){
+				$tpl_placeholders = ddTools::encodedStringToArray($tpl_placeholders);
+				//Unfold for arrays support (e. g. “{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.a+]”, “[+somePlaceholder2.b+]”; “{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.0+]”, “[somePlaceholder2.1]”)
+				$tpl_placeholders = ddTools::unfoldArray($tpl_placeholders);
+				
 				//Разбиваем их
 				$resArr = array_merge(
 					$resArr,
-					ddTools::explodeAssoc($tpl_placeholders)
+					$tpl_placeholders
 				);
 			}
 			
