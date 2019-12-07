@@ -57,15 +57,29 @@ if (!empty($file)){
 		'/'
 	);
 	
-	//Пытаемся открыть файл
-	$fileHandle = @fopen(
+	//URL
+	if (filter_var(
 		$file,
-		'r'
-	);
-	
-	if ($fileHandle){
-		fclose($fileHandle);
+		FILTER_VALIDATE_URL
+	) !== false){
+		$isFileUrl = true;
 		
+		$isFileExists =
+			stripos(
+				get_headers($file)[0],
+				'200 OK'
+			) ?
+			true :
+			false
+		;
+	//File
+	}else{
+		$isFileUrl = false;
+		
+		$isFileExists = file_exists($file);
+	}
+	
+	if ($isFileExists){
 		$sizeNameFormat = isset($sizeNameFormat) ? $sizeNameFormat : 'EnShort';
 		$sizePrecision = isset($sizePrecision) ? intval($sizePrecision) : 2;
 		
@@ -190,8 +204,13 @@ if (!empty($file)){
 			),
 		];
 		
-		//Пробуем получить размер файла
-		$filesize = @filesize($file);
+		$filesize = false;
+		
+		if (!$isFileUrl){
+			//Пробуем получить размер файла
+			$filesize = @filesize($file);
+		}
+		
 		//Если вышло
 		if ($filesize !== false){
 			//Формируем строку размера файла
