@@ -22,8 +22,8 @@
  * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
-//Include MODXEvo.libraries.ddTools
-require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
 
 //Backward compatibility
 extract(ddTools::verifyRenamedParams(
@@ -49,7 +49,11 @@ if (isset($file_docField)){
 $result = '';
 
 if (!empty($file)){
-	$output = isset($output) ? $output : 'size';
+	$output =
+		isset($output) ?
+		$output :
+		'size'
+	;
 	
 	//Всегда удаляем слэш слева
 	$file = ltrim(
@@ -80,8 +84,16 @@ if (!empty($file)){
 	}
 	
 	if ($isFileExists){
-		$sizeNameFormat = isset($sizeNameFormat) ? $sizeNameFormat : 'EnShort';
-		$sizePrecision = isset($sizePrecision) ? intval($sizePrecision) : 2;
+		$sizeNameFormat =
+			isset($sizeNameFormat) ?
+			$sizeNameFormat :
+			'EnShort'
+		;
+		$sizePrecision =
+			isset($sizePrecision) ?
+			intval($sizePrecision) :
+			2
+		;
 		
 		//Backward compatibility
 		if (is_numeric($sizeNameFormat)){
@@ -161,10 +173,12 @@ if (!empty($file)){
 					$i++;
 				}
 				
-				return round(
-					$size,
-					$prec
-				).$mas[$i];
+				return
+					round(
+						$size,
+						$prec
+					) . $mas[$i]
+				;
 			}
 		}
 		
