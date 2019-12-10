@@ -25,6 +25,9 @@
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
 
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
+
 //Backward compatibility
 extract(ddTools::verifyRenamedParams(
 	$params,
@@ -45,8 +48,6 @@ if (isset($file_docField)){
 	);
 	$file = $file[$file_docField];
 }
-
-$result = '';
 
 if (!empty($file)){
 	$output =
@@ -182,17 +183,17 @@ if (!empty($file)){
 			}
 		}
 		
-		$extPos = strrpos(
+		$extensionPos = strrpos(
 			$file,
 			'.'
 		);
-		$folPos = strrpos(
+		$dirPos = strrpos(
 			$file,
 			'/'
 		);
 		
 		//TODO: Использовать класс «SplFileInfo»
-		$resArr = [
+		$snippetResultArray = [
 			//Полный адрес файла
 			'file' => $file,
 			//Размер
@@ -200,21 +201,21 @@ if (!empty($file)){
 			//Расширение
 			'extension' => substr(
 				$file,
-				$extPos + 1
+				$extensionPos + 1
 			),
 			//«Тип» файла
 			'type' => '',
 			//Имя файла
 			'name' => substr(
 				$file,
-				$folPos + 1,
-				$extPos - $folPos - 1
+				$dirPos + 1,
+				$extensionPos - $dirPos - 1
 			),
 			//Путь к файлу
 			'path' => substr(
 				$file,
 				0,
-				$folPos
+				$dirPos
 			),
 		];
 		
@@ -228,7 +229,7 @@ if (!empty($file)){
 		//Если вышло
 		if ($filesize !== false){
 			//Формируем строку размера файла
-			$resArr['size'] = ddfsize_format(
+			$snippetResultArray['size'] = ddfsize_format(
 				$filesize,
 				$sizeNameFormat,
 				$sizePrecision
@@ -236,13 +237,13 @@ if (!empty($file)){
 		}
 		
 		//Пытаемся определить тип файла
-		switch (strtolower($resArr['extension'])){
+		switch (strtolower($snippetResultArray['extension'])){
 			case 'zip':
 			case '7z':
 			case 'tar':
 			case 'gz':
 			case 'rar':
-				$resArr['type'] = 'archive';
+				$snippetResultArray['type'] = 'archive';
 			break;
 			
 			case 'jpg':
@@ -253,7 +254,7 @@ if (!empty($file)){
 			case 'tif':
 			case 'tiff':
 			case 'webp':
-				$resArr['type'] = 'image';
+				$snippetResultArray['type'] = 'image';
 			break;
 			
 			case 'webm':
@@ -266,7 +267,7 @@ if (!empty($file)){
 			case 'mpeg':
 			case 'mp4':
 			case 'm4v':
-				$resArr['type'] = 'video';
+				$snippetResultArray['type'] = 'video';
 			break;
 			
 			case 'flac':
@@ -276,34 +277,34 @@ if (!empty($file)){
 			case 'wma':
 			case 'mp3':
 			case 'oga':
-				$resArr['type'] = 'audio';
+				$snippetResultArray['type'] = 'audio';
 			break;
 			
 			case 'txt':
-				$resArr['type'] = 'text';
+				$snippetResultArray['type'] = 'text';
 			break;
 			
 			case 'pdf':
-				$resArr['type'] = 'pdf';
+				$snippetResultArray['type'] = 'pdf';
 			break;
 			
 			case 'doc':
 			case 'docx':
-				$resArr['type'] = 'word';
+				$snippetResultArray['type'] = 'word';
 			break;
 			
 			case 'xls':
 			case 'xlsx':
 			case 'xlsm':
 			case 'xlsb':
-				$resArr['type'] = 'excel';
+				$snippetResultArray['type'] = 'excel';
 			break;
 			
 			case 'ppt':
 			case 'pptx':
 			case 'pps':
 			case 'ppsx':
-				$resArr['type'] = 'powerpoint';
+				$snippetResultArray['type'] = 'powerpoint';
 			break;
 		}
 		
@@ -316,21 +317,21 @@ if (!empty($file)){
 				$tpl_placeholders = ddTools::unfoldArray($tpl_placeholders);
 				
 				//Разбиваем их
-				$resArr = array_merge(
-					$resArr,
+				$snippetResultArray = array_merge(
+					$snippetResultArray,
 					$tpl_placeholders
 				);
 			}
 			
-			$result = ddTools::parseText([
+			$snippetResult = ddTools::parseText([
 				'text' => $modx->getTpl($tpl),
-				'data' => $resArr
+				'data' => $snippetResultArray
 			]);
 		}else{
-			$result = $resArr[$output];
+			$snippetResult = $snippetResultArray[$output];
 		}
 	}
 }
 
-return $result;
+return $snippetResult;
 ?>
