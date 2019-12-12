@@ -75,11 +75,21 @@ if (!empty($file)){
 	}else{
 		$isFileUrl = false;
 		
-		//Всегда удаляем слэш слева
-		$file = ltrim(
+		//If file doesn't contain base path
+		if (substr(
 			$file,
-			'/'
-		);
+			0,
+			strlen($modx->getConfig('base_path'))
+		) != $modx->getConfig('base_path')){
+			//Всегда удаляем слэш слева
+			$file = ltrim(
+				$file,
+				'/'
+			);
+			
+			//Add it
+			$file = $modx->getConfig('base_path') . $file;
+		}
 		
 		$isFileExists = file_exists($file);
 	}
