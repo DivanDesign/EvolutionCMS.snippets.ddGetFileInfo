@@ -1,11 +1,11 @@
 <?php
 /**
  * ddGetFileInfo
- * @version 2.2.1 (2018-11-24)
+ * @version 2.3 (2019-12-12)
  * 
  * @see README.md
  * 
- * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2019 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools

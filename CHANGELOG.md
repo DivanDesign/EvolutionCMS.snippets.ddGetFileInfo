@@ -1,6 +1,12 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 
+## Version 2.3 (2019-12-12)
+* \+ If `file` doesn't contain base path, the snippet will add it.
+* \* `fopen` is not used anymore because `@` operator doesn't always work.
+* \* `filesize` is used only for local files, not for URLs. `@` steel used because not only URLs will generate errors.
+
+
 ## Version 2.2.1 (2018-11-24)
 * \* Critical variable name error was fixed.
 

@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetfileinfo",
 	"type": "modxevo-snippet",
-	"version": "2.2.1",
+	"version": "2.3",
 	"description": "Выводит информацию о фале: размер, имя, расширение и пр.",
 	"keywords": [
 		"modx",
