@@ -56,12 +56,6 @@ if (!empty($file)){
 		'size'
 	;
 	
-	//Всегда удаляем слэш слева
-	$file = ltrim(
-		$file,
-		'/'
-	);
-	
 	//URL
 	if (filter_var(
 		$file,
@@ -80,6 +74,12 @@ if (!empty($file)){
 	//File
 	}else{
 		$isFileUrl = false;
+		
+		//Всегда удаляем слэш слева
+		$file = ltrim(
+			$file,
+			'/'
+		);
 		
 		$isFileExists = file_exists($file);
 	}
