@@ -1,2 +1,100 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo
+
 Выводит информацию о фале: размер, имя, расширение и пр.
+
+
+## # Requires
+* PHP >= 5.4
+* [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.18
+
+
+## # Documentation
+
+
+### ## Installation
+
+Elements → Snippets: Create a new snippet with the following data:
+1. Snippet name: `ddGetFileInfo`.
+2. Description: `<b>2.3</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
+3. Category: `Core`.
+4. Parse DocBlock: `no`.
+5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
+
+
+### ## Parameters description
+
+* `file`
+	* Desctription: Имя файла (путь).
+	* Valid values:
+		* `string_filePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
+		* `string_url` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
+	* **Required**
+	
+* `file_docField`
+	* Desctription: Поле документа (включая TV), содержащее путь к файлу (если вы хотите, чтобы сниппет получил адрес файла из поля документа).
+	* Valid values: `string`
+	* Default value: —
+	
+* `file_docId`
+	* Desctription: ID документа, из поля которого нужно получить адрес файла.
+	* Valid values: `integer_docId`
+	* Default value: —
+	
+* `sizeNameFormat`
+	* Desctription: Формат вывода названия размера файла.
+	* Valid values:
+		* `'none'`
+		* `'EnShort'` — e. g. `MB`
+		* `'EnFull'` — e. g. `Megabyte`
+		* `'RuShort'` — e. g. `Мб`
+		* `'RuFull'` — e. g. `Мегабайт`
+	* Default value: `'EnShort'`
+	
+* `sizePrecision`
+	* Desctription: Количество цифр после запятой.
+	* Valid values: `integer`
+	* Default value: `2`
+	
+* `output`
+	* Desctription: Что нужно вернуть, если не задан шаблон `tpl`.
+	* Valid values:
+		* `'size'`
+		* `'extension'`
+		* `'type'`
+		* `'name'`
+		* `'path'`
+	* Default value: `'size'`
+	
+* `tpl`
+	* Desctription: Шаблон для вывода (без шаблона возвращает согласно параметру `output`).
+		
+		Available placeholders:
+		* `[+file+]` — полный адрес файла
+		* `[+name+]` — имя файла
+		* `[+path+]` — путь к файлу
+		* `[+size+]` — размер файла
+		* `[+extension+]` — расширение файла
+		* `[+type+]` — тип файла:
+			* `'archive'`
+			* `'image'`
+			* `'video'`
+			* `'audio'`
+			* `'text'`
+			* `'pdf'`
+			* `'word'`
+			* `'excel'`
+			* `'powerpoint'`
+			* `''`
+		
+	* Valid values:
+		* `string_chunkName`
+		* `string` — use inline templates starting with `@CODE:`
+	* Default value: —
+	
+* `tpl_placeholders`
+	* Desctription: Additional data has to be passed into the `tpl`. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
+	* Valid values:
+		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+	* Default value: —
