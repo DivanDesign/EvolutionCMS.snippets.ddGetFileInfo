@@ -62,6 +62,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `'size'`
 		* `'extension'`
 		* `'type'`
+		* `'typeMime'`
 		* `'name'`
 		* `'path'`
 	* Default value: `'size'`
@@ -85,7 +86,7 @@ Elements → Snippets: Create a new snippet with the following data:
 			* `'word'`
 			* `'excel'`
 			* `'powerpoint'`
-			* `''`
+		* `[+typeMime+]` — content type in MIME format (only for local files, not for URLs)
 		
 	* Valid values:
 		* `stringChunkName`

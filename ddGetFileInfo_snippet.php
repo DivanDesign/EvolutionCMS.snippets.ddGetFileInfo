@@ -212,6 +212,11 @@ if (!empty($file)){
 			),
 			//«Тип» файла
 			'type' => '',
+			'typeMime' =>
+				$isFileUrl ?
+				'' :
+				mime_content_type($file)
+			,
 			//Имя файла
 			'name' => substr(
 				$file,
