@@ -3,16 +3,16 @@
 Выводит информацию о фале: размер, имя, расширение и пр.
 
 
-## # Requires
+## Requires
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.18
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
 
 Elements → Snippets: Create a new snippet with the following data:
 1. Snippet name: `ddGetFileInfo`.
@@ -22,7 +22,7 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `file`
 	* Desctription: Имя файла (путь).
@@ -98,3 +98,6 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
+
+
+<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
