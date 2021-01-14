@@ -27,8 +27,8 @@ Elements → Snippets: Create a new snippet with the following data:
 * `file`
 	* Desctription: Имя файла (путь).
 	* Valid values:
-		* `string_filePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
-		* `string_url` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
+		* `stringFilePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
+		* `stringUrl` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
 	* **Required**
 	
 * `file_docField`
@@ -38,7 +38,7 @@ Elements → Snippets: Create a new snippet with the following data:
 	
 * `file_docId`
 	* Desctription: ID документа, из поля которого нужно получить адрес файла.
-	* Valid values: `integer_docId`
+	* Valid values: `integerDocId`
 	* Default value: —
 	
 * `sizeNameFormat`
@@ -88,13 +88,13 @@ Elements → Snippets: Create a new snippet with the following data:
 			* `''`
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `tpl_placeholders`
 	* Desctription: Additional data has to be passed into the `tpl`. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
