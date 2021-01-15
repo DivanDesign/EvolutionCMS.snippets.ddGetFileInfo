@@ -1,21 +1,24 @@
 <?php
 /**
  * ddGetFileInfo
- * @version 2.3 (2019-12-12)
+ * @version 2.4 (2021-01-15)
  * 
  * @see README.md
  * 
- * @copyright 2010–2019 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2021 DD Group {@link https://DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
 
 //The snippet must return an empty string even if result is absent
 $snippetResult = '';
 
 //Backward compatibility
-extract(ddTools::verifyRenamedParams(
+extract(\ddTools::verifyRenamedParams(
 	$params,
 	[
 		'file_docField' => 'docField',
@@ -28,7 +31,7 @@ extract(ddTools::verifyRenamedParams(
 
 //Получаем имя файла из заданного поля
 if (isset($file_docField)){
-	$file = ddTools::getTemplateVarOutput(
+	$file = \ddTools::getTemplateVarOutput(
 		[$file_docField],
 		$file_docId
 	);
@@ -42,16 +45,20 @@ if (!empty($file)){
 		'size'
 	;
 	
+	$fileFullPathName = $file;
+	
 	//URL
-	if (filter_var(
-		$file,
-		FILTER_VALIDATE_URL
-	) !== false){
+	if (
+		filter_var(
+			$fileFullPathName,
+			FILTER_VALIDATE_URL
+		) !== false
+	){
 		$isFileUrl = true;
 		
 		$isFileExists =
 			stripos(
-				get_headers($file)[0],
+				get_headers($fileFullPathName)[0],
 				'200 OK'
 			) ?
 			true :
@@ -62,22 +69,27 @@ if (!empty($file)){
 		$isFileUrl = false;
 		
 		//If file doesn't contain base path
-		if (substr(
-			$file,
-			0,
-			strlen($modx->getConfig('base_path'))
-		) != $modx->getConfig('base_path')){
+		if (
+			substr(
+				$fileFullPathName,
+				0,
+				strlen($modx->getConfig('base_path'))
+			) != $modx->getConfig('base_path')
+		){
 			//Всегда удаляем слэш слева
-			$file = ltrim(
-				$file,
+			$fileFullPathName = ltrim(
+				$fileFullPathName,
 				'/'
 			);
 			
 			//Add it
-			$file = $modx->getConfig('base_path') . $file;
+			$fileFullPathName =
+				$modx->getConfig('base_path') .
+				$fileFullPathName
+			;
 		}
 		
-		$isFileExists = file_exists($file);
+		$isFileExists = file_exists($fileFullPathName);
 	}
 	
 	if ($isFileExists){
@@ -174,7 +186,8 @@ if (!empty($file)){
 					round(
 						$size,
 						$prec
-					) . $mas[$i]
+					) .
+					$mas[$i]
 				;
 			}
 		}
@@ -201,6 +214,8 @@ if (!empty($file)){
 			),
 			//«Тип» файла
 			'type' => '',
+			//Type in MIME format
+			'typeMime' => '',
 			//Имя файла
 			'name' => substr(
 				$file,
@@ -219,7 +234,22 @@ if (!empty($file)){
 		
 		if (!$isFileUrl){
 			//Пробуем получить размер файла
-			$filesize = @filesize($file);
+			$filesize = @filesize($fileFullPathName);
+			
+			$snippetResultArray['typeMime'] =
+				//If it's SVG
+				in_array(
+					$snippetResultArray['extension'],
+					[
+						'svg',
+						'svgz'
+					]
+				) ?
+				//Assign manually because mime_content_type is not working correct in this case
+				'image/svg+xml' :
+				//Call default PHP function
+				mime_content_type($fileFullPathName)
+			;
 		}
 		
 		//Если вышло
@@ -308,9 +338,9 @@ if (!empty($file)){
 		if (isset($tpl)){
 			//Если есть дополнительные данные
 			if (isset($tpl_placeholders)){
-				$tpl_placeholders = ddTools::encodedStringToArray($tpl_placeholders);
+				$tpl_placeholders = \ddTools::encodedStringToArray($tpl_placeholders);
 				//Unfold for arrays support (e. g. “{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.a+]”, “[+somePlaceholder2.b+]”; “{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.0+]”, “[somePlaceholder2.1]”)
-				$tpl_placeholders = ddTools::unfoldArray($tpl_placeholders);
+				$tpl_placeholders = \ddTools::unfoldArray($tpl_placeholders);
 				
 				//Разбиваем их
 				$snippetResultArray = array_merge(
@@ -319,7 +349,7 @@ if (!empty($file)){
 				);
 			}
 			
-			$snippetResult = ddTools::parseText([
+			$snippetResult = \ddTools::parseText([
 				'text' => $modx->getTpl($tpl),
 				'data' => $snippetResultArray
 			]);

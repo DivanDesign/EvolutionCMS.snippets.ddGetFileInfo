@@ -3,32 +3,32 @@
 Выводит информацию о фале: размер, имя, расширение и пр.
 
 
-## # Requires
+## Requires
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.18
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
 
 Elements → Snippets: Create a new snippet with the following data:
 1. Snippet name: `ddGetFileInfo`.
-2. Description: `<b>2.3</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
+2. Description: `<b>2.4</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `file`
 	* Desctription: Имя файла (путь).
 	* Valid values:
-		* `string_filePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
-		* `string_url` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
+		* `stringFilePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
+		* `stringUrl` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
 	* **Required**
 	
 * `file_docField`
@@ -38,7 +38,7 @@ Elements → Snippets: Create a new snippet with the following data:
 	
 * `file_docId`
 	* Desctription: ID документа, из поля которого нужно получить адрес файла.
-	* Valid values: `integer_docId`
+	* Valid values: `integerDocId`
 	* Default value: —
 	
 * `sizeNameFormat`
@@ -62,6 +62,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `'size'`
 		* `'extension'`
 		* `'type'`
+		* `'typeMime'`
 		* `'name'`
 		* `'path'`
 	* Default value: `'size'`
@@ -85,16 +86,27 @@ Elements → Snippets: Create a new snippet with the following data:
 			* `'word'`
 			* `'excel'`
 			* `'powerpoint'`
-			* `''`
+		* `[+typeMime+]` — content type in MIME format (only for local files, not for URLs)
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `tpl_placeholders`
-	* Desctription: Additional data has to be passed into the `tpl`. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
+	* Desctription:
+		Additional data has to be passed into the `tpl`.  
+		Nested objects and arrays are supported too:
+		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as native PHP object or array (e. g. for calls through `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
+
+
+<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
