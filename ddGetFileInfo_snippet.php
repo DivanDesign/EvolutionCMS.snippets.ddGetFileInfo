@@ -45,10 +45,12 @@ if (!empty($file)){
 		'size'
 	;
 	
+	$fileFullPathName = $file;
+	
 	//URL
 	if (
 		filter_var(
-			$file,
+			$fileFullPathName,
 			FILTER_VALIDATE_URL
 		) !== false
 	){
@@ -56,7 +58,7 @@ if (!empty($file)){
 		
 		$isFileExists =
 			stripos(
-				get_headers($file)[0],
+				get_headers($fileFullPathName)[0],
 				'200 OK'
 			) ?
 			true :
@@ -69,25 +71,25 @@ if (!empty($file)){
 		//If file doesn't contain base path
 		if (
 			substr(
-				$file,
+				$fileFullPathName,
 				0,
 				strlen($modx->getConfig('base_path'))
 			) != $modx->getConfig('base_path')
 		){
 			//Всегда удаляем слэш слева
-			$file = ltrim(
-				$file,
+			$fileFullPathName = ltrim(
+				$fileFullPathName,
 				'/'
 			);
 			
 			//Add it
-			$file =
+			$fileFullPathName =
 				$modx->getConfig('base_path') .
-				$file
+				$fileFullPathName
 			;
 		}
 		
-		$isFileExists = file_exists($file);
+		$isFileExists = file_exists($fileFullPathName);
 	}
 	
 	if ($isFileExists){
@@ -215,7 +217,7 @@ if (!empty($file)){
 			'typeMime' =>
 				$isFileUrl ?
 				'' :
-				mime_content_type($file)
+				mime_content_type($fileFullPathName)
 			,
 			//Имя файла
 			'name' => substr(
@@ -235,7 +237,7 @@ if (!empty($file)){
 		
 		if (!$isFileUrl){
 			//Пробуем получить размер файла
-			$filesize = @filesize($file);
+			$filesize = @filesize($fileFullPathName);
 		}
 		
 		//Если вышло
