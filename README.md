@@ -109,4 +109,11 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: —
 
 
+## Links
+
+* [Home page](https://code.divandesign.biz/modx/ddgetfileinfo)
+* [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetfileinfo)
+
+
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
