@@ -1,6 +1,13 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 
+## Version 2.4 (2021-01-15)
+* \+ The ability to return the MIME content type for a file (see the `tpl` parameter).
+* \* Parameters → `tpl`: Wrong `[+file+]` placeholder was fixed.
+* \+ README, CHANGELOG: Style improvements.
+* \+ README → Documentation → Parameters description → `tpl_placeholders`: Text improved.
+
+
 ## Version 2.3 (2019-12-12)
 * \+ If `file` doesn't contain base path, the snippet will add it.
 * \* `fopen` is not used anymore because `@` operator doesn't always work.
