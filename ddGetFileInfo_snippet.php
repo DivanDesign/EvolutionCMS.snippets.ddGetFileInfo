@@ -214,11 +214,8 @@ if (!empty($file)){
 			),
 			//«Тип» файла
 			'type' => '',
-			'typeMime' =>
-				$isFileUrl ?
-				'' :
-				mime_content_type($fileFullPathName)
-			,
+			//Type in MIME format
+			'typeMime' => '',
 			//Имя файла
 			'name' => substr(
 				$file,
@@ -238,6 +235,21 @@ if (!empty($file)){
 		if (!$isFileUrl){
 			//Пробуем получить размер файла
 			$filesize = @filesize($fileFullPathName);
+			
+			$snippetResultArray['typeMime'] =
+				//If it's SVG
+				in_array(
+					$snippetResultArray['extension'],
+					[
+						'svg',
+						'svgz'
+					]
+				) ?
+				//Assign manually because mime_content_type is not working correct in this case
+				'image/svg+xml' :
+				//Call default PHP function
+				mime_content_type($fileFullPathName)
+			;
 		}
 		
 		//Если вышло
