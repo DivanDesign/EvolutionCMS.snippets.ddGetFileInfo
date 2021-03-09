@@ -134,7 +134,7 @@ if (!empty($file)){
 						'',
 						''
 					];
-				}else if ($type == 'RuShort'){
+				}elseif ($type == 'RuShort'){
 					$mas = [
 						' б',
 						' Кб',
@@ -144,7 +144,7 @@ if (!empty($file)){
 						' Пб',
 						' Эб'
 					];
-				}else if ($type == 'RuFull'){
+				}elseif ($type == 'RuFull'){
 					$mas = [
 						' байт',
 						' Килобайт',
@@ -154,7 +154,7 @@ if (!empty($file)){
 						' Петабайт',
 						' Эксабайт'
 					];
-				}else if ($type == 'EnShort'){
+				}elseif ($type == 'EnShort'){
 					$mas = [
 						' B',
 						' KB',
@@ -164,7 +164,7 @@ if (!empty($file)){
 						' PB',
 						' EB'
 					];
-				}else if ($type == 'EnFull'){
+				}elseif ($type == 'EnFull'){
 					$mas = [
 						' Bytes',
 						' Kilobytes',
