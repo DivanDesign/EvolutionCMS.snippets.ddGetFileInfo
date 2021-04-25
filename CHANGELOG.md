@@ -1,6 +1,27 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 
+## Version 2.5 (2021-04-25)
+* \* Attention! PHP >= 5.6 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.49 is required.
+* \* Parameters:
+	* \+ `tpl_placeholders`: Can also be set as HJSON.
+	* \* `sizeUnitFormat`
+		* \* Was renamed from `sizeNameFormat` (with backward compatibility).
+		* \+ Values are case insensitive.
+* \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
+* \+ `\ddGetFileInfo\Snippet`: The new class. All snippet code was moved here.
+* \+ README:
+	* \+ Documentation → Installation → Using (MODX)EvolutionCMS.libraries.ddInstaller.
+	* \+ Links.
+	* \+ Text improvements.
+* \+ README_ru.
+* \+ Composer.json:
+	* \+ `homepage`.
+	* \+ `support`.
+	* \+ `authors`.
+
+
 ## Version 2.4 (2021-01-15)
 * \+ The ability to return the MIME content type for a file (see the `tpl` parameter).
 * \* Parameters → `tpl`: Wrong `[+file+]` placeholder was fixed.

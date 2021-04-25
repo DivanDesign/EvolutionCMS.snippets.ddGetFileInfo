@@ -1,25 +1,51 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetfileinfo",
 	"type": "modxevo-snippet",
-	"version": "2.4",
-	"description": "Выводит информацию о фале: размер, имя, расширение и пр.",
+	"version": "2.5.0",
+	"description": "Displays information about a file: type, mime, size in readable format, path, name, extension, etc.",
 	"keywords": [
 		"modx",
 		"modx evo",
 		"modx evolution",
 		"evo",
 		"evo cms",
+		"evolutioncms",
 		"evolution cms",
+		"dd group",
+		"dd studio",
+		"divandesign",
 		"ddgetfileinfo",
 		"get file info",
 		"file info",
 		"file size",
+		"file size in human format",
+		"human readable file size",
+		"readable file size",
+		"file size in mb",
 		"file extension",
 		"file type",
 		"file mime"
 	],
+	"homepage": "https://code.divandesign.biz/modx/ddgetfileinfo",
+	"support": {
+		"chat": "https://t.me/dd_code"
+	},
+	"authors": [
+		{
+			"name": "DD Group",
+			"email": "code@DivanDesign.biz",
+			"homepage": "https://code.divandesign.biz",
+			"role": "Owner"
+		},
+		{
+			"name": "Ilyas Ronef",
+			"email": "ilyas@DivanDesign.ru",
+			"homepage": "https://ronef.ru",
+			"role": "Developer"
+		}
+	],
 	"require": {
-		"php": ">=5.4",
-		"dd/evolutioncms-libraries-ddtools": ">=0.18"
+		"php": ">=5.6.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.49.0"
 	}
 }
