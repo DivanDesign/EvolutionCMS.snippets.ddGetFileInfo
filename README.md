@@ -15,7 +15,10 @@
 ### Installation
 
 
-#### 1. Elements → Snippets: Create a new snippet with the following data
+#### Manually
+
+
+##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetFileInfo`.
 2. Description: `<b>2.4</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
@@ -24,10 +27,32 @@
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
 
 
-#### 2. Elements → Manage Files
+##### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddGetFileInfo/`.
 2. Extract the archive to the folder (except `ddGetFileInfo_snippet.php`).
+
+
+#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Install (MODX)EvolutionCMS.snippets.ddGetFileInfo
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddGetFileInfo` is not exist on your site, `ddInstaller` will just install it.
+* If `ddGetFileInfo` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
 ### Parameters description
