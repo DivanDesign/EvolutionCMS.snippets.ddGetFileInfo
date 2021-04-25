@@ -14,12 +14,20 @@
 
 ### Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
+
 1. Snippet name: `ddGetFileInfo`.
 2. Description: `<b>2.4</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
+
+
+#### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddGetFileInfo/`.
+2. Extract the archive to the folder (except `ddGetFileInfo_snippet.php`).
 
 
 ### Parameters description
@@ -108,6 +116,29 @@ Elements → Snippets: Create a new snippet with the following data:
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
+
+
+### Examples
+
+
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddGetFileInfo
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetFileInfo',
+	'params' => [
+		'file' => 'assets/images/evo-logo.png',
+		'output' => 'size'
+	]
+]);
+```
 
 
 ## Links
