@@ -59,7 +59,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0 (2021-04-25)
+	 * @version 1.0.1 (2021-04-25)
 	 * 
 	 * @return {string}
 	 */
@@ -130,84 +130,6 @@ class Snippet extends \DDTools\Snippet {
 			}
 			
 			if ($isFileExists){
-				if (!function_exists('ddfsize_format')){
-					function ddfsize_format(
-						$size,
-						$type,
-						$prec
-					){
-						//Устанавливаем конфигурацию вывода приставок
-						if ($type == 'none'){
-							$mas = [
-								'',
-								'',
-								'',
-								'',
-								'',
-								'',
-								''
-							];
-						}elseif ($type == 'RuShort'){
-							$mas = [
-								' б',
-								' Кб',
-								' Мб',
-								' Гб',
-								' Тб',
-								' Пб',
-								' Эб'
-							];
-						}elseif ($type == 'RuFull'){
-							$mas = [
-								' байт',
-								' Килобайт',
-								' Мегабайт',
-								' Гигабайт',
-								' Терабайт',
-								' Петабайт',
-								' Эксабайт'
-							];
-						}elseif ($type == 'EnShort'){
-							$mas = [
-								' B',
-								' KB',
-								' MB',
-								' GB',
-								' TB',
-								' PB',
-								' EB'
-							];
-						}elseif ($type == 'EnFull'){
-							$mas = [
-								' Bytes',
-								' Kilobytes',
-								' Megabytes',
-								' Gigabytes',
-								' Terabytes',
-								' Petabytes',
-								' Exabytes'
-							];
-						}
-						
-						$i = 0;
-						while (
-							($size / 1024) >=
-							1
-						){
-							$size = $size / 1024;
-							$i++;
-						}
-						
-						return
-							round(
-								$size,
-								$prec
-							) .
-							$mas[$i]
-						;
-					}
-				}
-				
 				$extensionPos = strrpos(
 					$this->params->file,
 					'.'
@@ -271,11 +193,11 @@ class Snippet extends \DDTools\Snippet {
 				//Если вышло
 				if ($filesize !== false){
 					//Формируем строку размера файла
-					$snippetResultArray['size'] = ddfsize_format(
-						$filesize,
-						$this->params->sizeNameFormat,
-						$this->params->sizePrecision
-					);
+					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
+						'size' => $filesize,
+						'unitFormat' => $this->params->sizeNameFormat,
+						'precision' => $this->params->sizePrecision
+					]);
 				}
 				
 				//Пытаемся определить тип файла
@@ -373,5 +295,93 @@ class Snippet extends \DDTools\Snippet {
 		}
 		
 		return $result;
+	}
+	
+	/**
+	 * getFileSizeInHumanFormat
+	 * @version 1.0 (2021-04-25)
+	 * 
+	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
+	 * @param $params->size {integer} — File size in bytes.
+	 * @param $params->unitFormat {'none'|'EnShort'|'EnFull'|'RuShort'|'RuFull'} — Format of file size unit.
+	 * @param $params->precision {integer} — The number of decimal digits to round to.
+	 * 
+	 * @return {string}
+	 */
+	private function getFileSizeInHumanFormat($params){
+		$params = \DDTools\ObjectTools::convertType([
+			'object' => $params,
+			'type' => 'objectStdClass'
+		]);
+		
+		//Устанавливаем конфигурацию вывода приставок
+		if ($params->unitFormat == 'none'){
+			$mas = [
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				''
+			];
+		}elseif ($params->unitFormat == 'RuShort'){
+			$mas = [
+				' б',
+				' Кб',
+				' Мб',
+				' Гб',
+				' Тб',
+				' Пб',
+				' Эб'
+			];
+		}elseif ($params->unitFormat == 'RuFull'){
+			$mas = [
+				' байт',
+				' Килобайт',
+				' Мегабайт',
+				' Гигабайт',
+				' Терабайт',
+				' Петабайт',
+				' Эксабайт'
+			];
+		}elseif ($params->unitFormat == 'EnShort'){
+			$mas = [
+				' B',
+				' KB',
+				' MB',
+				' GB',
+				' TB',
+				' PB',
+				' EB'
+			];
+		}elseif ($params->unitFormat == 'EnFull'){
+			$mas = [
+				' Bytes',
+				' Kilobytes',
+				' Megabytes',
+				' Gigabytes',
+				' Terabytes',
+				' Petabytes',
+				' Exabytes'
+			];
+		}
+		
+		$i = 0;
+		while (
+			($params->size / 1024) >=
+			1
+		){
+			$params->size = $params->size / 1024;
+			$i++;
+		}
+		
+		return
+			round(
+				$params->size,
+				$params->precision
+			) .
+			$mas[$i]
+		;
 	}
 }
