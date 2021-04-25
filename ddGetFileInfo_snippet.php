@@ -347,11 +347,12 @@ if (!empty($params->file)){
 				//Unfold for arrays support (e. g. “{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.a+]”, “[+somePlaceholder2.b+]”; “{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.0+]”, “[somePlaceholder2.1]”)
 				$params->tpl_placeholders = \ddTools::unfoldArray($params->tpl_placeholders);
 				
-				//Разбиваем их
-				$snippetResultArray = array_merge(
-					$snippetResultArray,
-					$params->tpl_placeholders
-				);
+				$snippetResultArray = \DDTools\ObjectTools::extend([
+					'objects' => [
+						$snippetResultArray,
+						$params->tpl_placeholders
+					]
+				]);
 			}
 			
 			$snippetResult = \ddTools::parseText([
