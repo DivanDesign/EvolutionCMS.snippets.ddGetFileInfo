@@ -47,6 +47,11 @@ $params = \DDTools\ObjectTools::extend([
 
 $params->sizePrecision = intval($params->sizePrecision);
 
+$params->tpl_placeholders = \DDTools\ObjectTools::convertType([
+	'object' => $params->tpl_placeholders,
+	'type' => 'objectArray'
+]);
+
 
 //The snippet must return an empty string even if result is absent
 $snippetResult = '';
@@ -343,8 +348,6 @@ if (!empty($params->file)){
 		if (!empty($params->tpl)){
 			//Если есть дополнительные данные
 			if (!empty($params->tpl_placeholders)){
-				$params->tpl_placeholders = \ddTools::encodedStringToArray($params->tpl_placeholders);
-				
 				$snippetResultArray = \DDTools\ObjectTools::extend([
 					'objects' => [
 						$snippetResultArray,
