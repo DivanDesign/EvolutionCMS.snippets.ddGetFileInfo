@@ -10,7 +10,7 @@ class Snippet extends \DDTools\Snippet {
 			'file' => null,
 			'file_docField' => null,
 			'file_docId' => null,
-			'sizeNameFormat' => 'EnShort',
+			'sizeUnitFormat' => 'EnShort',
 			'sizePrecision' => 2,
 			'output' => 'size',
 			'tpl' => null,
@@ -25,7 +25,10 @@ class Snippet extends \DDTools\Snippet {
 		$renamedParamsCompliance = [
 			'file_docField' => 'docField',
 			'file_docId' => 'docId',
-			'sizeNameFormat' => 'sizeType',
+			'sizeUnitFormat' => [
+				'sizeNameFormat',
+				'sizeType'
+			],
 			'sizePrecision' => 'sizePrec',
 			'tpl_placeholders' => 'placeholders'
 		]
@@ -33,7 +36,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.0 (2021-04-25)
+	 * @version 1.0.1 (2021-04-25)
 	 * 
 	 * @param $this->params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
@@ -44,9 +47,9 @@ class Snippet extends \DDTools\Snippet {
 		parent::prepareParams($params);
 		
 		//Backward compatibility
-		if (is_numeric($this->params->sizeNameFormat)){
-			$this->params->sizeNameFormat = strtr(
-				$this->params->sizeNameFormat,
+		if (is_numeric($this->params->sizeUnitFormat)){
+			$this->params->sizeUnitFormat = strtr(
+				$this->params->sizeUnitFormat,
 				[
 					'-1' => 'none',
 					'0' => 'RuShort',
@@ -59,7 +62,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2021-04-25)
+	 * @version 1.0.2 (2021-04-25)
 	 * 
 	 * @return {string}
 	 */
@@ -195,7 +198,7 @@ class Snippet extends \DDTools\Snippet {
 					//Формируем строку размера файла
 					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
 						'size' => $filesize,
-						'unitFormat' => $this->params->sizeNameFormat,
+						'unitFormat' => $this->params->sizeUnitFormat,
 						'precision' => $this->params->sizePrecision
 					]);
 				}

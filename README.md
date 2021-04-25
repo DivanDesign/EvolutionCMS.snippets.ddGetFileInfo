@@ -74,7 +74,7 @@ require_once(
 	* Valid values: `integerDocId`
 	* Default value: —
 	
-* `sizeNameFormat`
+* `sizeUnitFormat`
 	* Desctription: Формат вывода названия размера файла.
 	* Valid values:
 		* `'none'`
