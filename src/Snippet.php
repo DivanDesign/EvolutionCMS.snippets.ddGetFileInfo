@@ -36,7 +36,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.0.1 (2021-04-25)
+	 * @version 1.1 (2021-04-25)
 	 * 
 	 * @param $this->params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
@@ -58,6 +58,8 @@ class Snippet extends \DDTools\Snippet {
 				]
 			);
 		}
+		
+		$this->params->sizeUnitFormat = strtolower($this->params->sizeUnitFormat);
 	}
 	
 	/**
@@ -302,7 +304,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * getFileSizeInHumanFormat
-	 * @version 1.0 (2021-04-25)
+	 * @version 1.0.1 (2021-04-25)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * @param $params->size {integer} — File size in bytes.
@@ -328,7 +330,7 @@ class Snippet extends \DDTools\Snippet {
 				'',
 				''
 			];
-		}elseif ($params->unitFormat == 'RuShort'){
+		}elseif ($params->unitFormat == 'rushort'){
 			$mas = [
 				' б',
 				' Кб',
@@ -338,7 +340,7 @@ class Snippet extends \DDTools\Snippet {
 				' Пб',
 				' Эб'
 			];
-		}elseif ($params->unitFormat == 'RuFull'){
+		}elseif ($params->unitFormat == 'rufull'){
 			$mas = [
 				' байт',
 				' Килобайт',
@@ -348,7 +350,7 @@ class Snippet extends \DDTools\Snippet {
 				' Петабайт',
 				' Эксабайт'
 			];
-		}elseif ($params->unitFormat == 'EnShort'){
+		}elseif ($params->unitFormat == 'enshort'){
 			$mas = [
 				' B',
 				' KB',
@@ -358,7 +360,7 @@ class Snippet extends \DDTools\Snippet {
 				' PB',
 				' EB'
 			];
-		}elseif ($params->unitFormat == 'EnFull'){
+		}elseif ($params->unitFormat == 'enfull'){
 			$mas = [
 				' Bytes',
 				' Kilobytes',

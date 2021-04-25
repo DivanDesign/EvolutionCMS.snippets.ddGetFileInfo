@@ -75,7 +75,8 @@ require_once(
 	* Default value: —
 	
 * `sizeUnitFormat`
-	* Desctription: Формат вывода названия размера файла.
+	* Desctription: Формат вывода названия размера файла.  
+		Values are case insensitive (the following names are equal: `'enshort'`, `'EnShort'`, `'ENSHORT'`, etc).
 	* Valid values:
 		* `'none'`
 		* `'EnShort'` — e. g. `MB`
