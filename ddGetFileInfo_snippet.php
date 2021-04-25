@@ -344,8 +344,6 @@ if (!empty($params->file)){
 			//Если есть дополнительные данные
 			if (!empty($params->tpl_placeholders)){
 				$params->tpl_placeholders = \ddTools::encodedStringToArray($params->tpl_placeholders);
-				//Unfold for arrays support (e. g. “{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.a+]”, “[+somePlaceholder2.b+]”; “{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.0+]”, “[somePlaceholder2.1]”)
-				$params->tpl_placeholders = \ddTools::unfoldArray($params->tpl_placeholders);
 				
 				$snippetResultArray = \DDTools\ObjectTools::extend([
 					'objects' => [
