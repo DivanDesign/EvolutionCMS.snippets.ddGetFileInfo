@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetFileInfo
- * @version 2.4 (2021-01-15)
+ * @version 2.5 (2021-04-25)
  * 
  * @see README.md
  * 
