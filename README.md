@@ -1,6 +1,6 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo
 
-Выводит информацию о фале: размер, имя, расширение и пр.
+Displays information about a file: type, mime, size in readable format, path, name, extension, etc.
 
 
 ## Requires
@@ -21,7 +21,7 @@
 ##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetFileInfo`.
-2. Description: `<b>2.4</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
+2. Description: `<b>2.4</b> Displays information about a file: type, mime, size in readable format, path, name, extension, etc.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
@@ -58,24 +58,24 @@ require_once(
 ### Parameters description
 
 * `file`
-	* Desctription: Имя файла (путь).
+	* Desctription: File name (path).
 	* Valid values:
-		* `stringFilePath` — путь к файлу можно указать относительно корня сайта (`/` в начале не играет роли, поддерживаются оба варианта), а можно и полный (включая `$modx->config['base_path']`)
-		* `stringUrl` — можно указать не только локальный файл, но и адрес в интернете, но в этом случае по объективным причинам поддерживаются не все функции
+		* `stringFilePath` — the path to the file can be specified relative to the site root (`/` at the beginning does not matter, both variants are supported), or the full path (including `$modx->config['base_path']`)
+		* `stringUrl` — you can specify not only a local file, but also an Internet address, but in this case not all functions are supported for objective reasons
 	* **Required**
 	
 * `file_docField`
-	* Desctription: Поле документа (включая TV), содержащее путь к файлу (если вы хотите, чтобы сниппет получил адрес файла из поля документа).
+	* Desctription: A document field (including TV) containing the path to the file (if you want the snippet to get the file address from the document field).
 	* Valid values: `string`
 	* Default value: —
 	
 * `file_docId`
-	* Desctription: ID документа, из поля которого нужно получить адрес файла.
+	* Desctription: Resource ID, from the field of which you want to get the file address.
 	* Valid values: `integerDocId`
 	* Default value: —
 	
 * `sizeUnitFormat`
-	* Desctription: Формат вывода названия размера файла.  
+	* Desctription: Format of file size unit.  
 		Values are case insensitive (the following names are equal: `'enshort'`, `'EnShort'`, `'ENSHORT'`, etc).
 	* Valid values:
 		* `'none'`
@@ -86,12 +86,12 @@ require_once(
 	* Default value: `'EnShort'`
 	
 * `sizePrecision`
-	* Desctription: Количество цифр после запятой.
+	* Desctription: The number of decimal digits to round to.
 	* Valid values: `integer`
 	* Default value: `2`
 	
 * `output`
-	* Desctription: Что нужно вернуть, если не задан шаблон `tpl`.
+	* Desctription: File information to output (if `tpl` is not set).
 	* Valid values:
 		* `'size'`
 		* `'extension'`
@@ -102,15 +102,14 @@ require_once(
 	* Default value: `'size'`
 	
 * `tpl`
-	* Desctription: Шаблон для вывода (без шаблона возвращает согласно параметру `output`).
-		
+	* Desctription: Output template (if the parameter is absent, file data corresponding to `output` will be returned).  
 		Available placeholders:
-		* `[+file+]` — полный адрес файла
-		* `[+name+]` — имя файла
-		* `[+path+]` — путь к файлу
-		* `[+size+]` — размер файла
-		* `[+extension+]` — расширение файла
-		* `[+type+]` — тип файла:
+		* `[+file+]` — full file address
+		* `[+name+]` — file name
+		* `[+path+]` — file path
+		* `[+size+]` — file size with a unit in a human-readable format
+		* `[+extension+]` — file extension
+		* `[+type+]` — file type:
 			* `'archive'`
 			* `'image'`
 			* `'video'`
@@ -121,7 +120,6 @@ require_once(
 			* `'excel'`
 			* `'powerpoint'`
 		* `[+typeMime+]` — content type in MIME format (only for local files, not for URLs)
-		
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
