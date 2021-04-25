@@ -19,7 +19,7 @@
 		"file mime"
 	],
 	"require": {
-		"php": ">=5.4",
-		"dd/evolutioncms-libraries-ddtools": ">=0.18"
+		"php": ">=5.6.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.49.0"
 	}
 }

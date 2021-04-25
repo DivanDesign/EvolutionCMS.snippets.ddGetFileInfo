@@ -14,38 +14,54 @@ require_once(
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//The snippet must return an empty string even if result is absent
-$snippetResult = '';
 
-//Backward compatibility
-extract(\ddTools::verifyRenamedParams(
-	$params,
-	[
+//Renaming params with backward compatibility
+$params = extract(\ddTools::verifyRenamedParams([
+	'params' => $params,
+	'compliance' => [
 		'file_docField' => 'docField',
 		'file_docId' => 'docId',
 		'sizeNameFormat' => 'sizeType',
 		'sizePrecision' => 'sizePrec',
 		'tpl_placeholders' => 'placeholders'
+	],
+	'returnCorrectedOnly' => false
+]));
+
+$params = \DDTools\ObjectTools::extend([
+	'objects' => [
+		//Defaults
+		(object) [
+			'file' => null,
+			'file_docField' => null,
+			'file_docId' => null,
+			'sizeNameFormat' => 'EnShort',
+			'sizePrecision' => 2,
+			'output' => 'size',
+			'tpl' => null,
+			'tpl_placeholders' => null
+		],
+		$params
 	]
-));
+]);
+
+$params->sizePrecision = intval($params->sizePrecision);
+
+
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
 
 //Получаем имя файла из заданного поля
-if (isset($file_docField)){
-	$file = \ddTools::getTemplateVarOutput(
-		[$file_docField],
-		$file_docId
+if (!empty($params->file_docField)){
+	$params->file = \ddTools::getTemplateVarOutput(
+		[$params->file_docField],
+		$params->file_docId
 	);
-	$file = $file[$file_docField];
+	$params->file = $params->file[$params->file_docField];
 }
 
-if (!empty($file)){
-	$output =
-		isset($output) ?
-		$output :
-		'size'
-	;
-	
-	$fileFullPathName = $file;
+if (!empty($params->file)){
+	$fileFullPathName = $params->file;
 	
 	//URL
 	if (
@@ -93,21 +109,10 @@ if (!empty($file)){
 	}
 	
 	if ($isFileExists){
-		$sizeNameFormat =
-			isset($sizeNameFormat) ?
-			$sizeNameFormat :
-			'EnShort'
-		;
-		$sizePrecision =
-			isset($sizePrecision) ?
-			intval($sizePrecision) :
-			2
-		;
-		
 		//Backward compatibility
-		if (is_numeric($sizeNameFormat)){
-			$sizeNameFormat = strtr(
-				$sizeNameFormat,
+		if (is_numeric($params->sizeNameFormat)){
+			$params->sizeNameFormat = strtr(
+				$params->sizeNameFormat,
 				[
 					'-1' => 'none',
 					'0' => 'RuShort',
@@ -193,23 +198,23 @@ if (!empty($file)){
 		}
 		
 		$extensionPos = strrpos(
-			$file,
+			$params->file,
 			'.'
 		);
 		$dirPos = strrpos(
-			$file,
+			$params->file,
 			'/'
 		);
 		
 		//TODO: Использовать класс «SplFileInfo»
 		$snippetResultArray = [
 			//Полный адрес файла
-			'file' => $file,
+			'file' => $params->file,
 			//Размер
 			'size' => '',
 			//Расширение
 			'extension' => substr(
-				$file,
+				$params->file,
 				$extensionPos + 1
 			),
 			//«Тип» файла
@@ -218,13 +223,13 @@ if (!empty($file)){
 			'typeMime' => '',
 			//Имя файла
 			'name' => substr(
-				$file,
+				$params->file,
 				$dirPos + 1,
 				$extensionPos - $dirPos - 1
 			),
 			//Путь к файлу
 			'path' => substr(
-				$file,
+				$params->file,
 				0,
 				$dirPos
 			),
@@ -257,8 +262,8 @@ if (!empty($file)){
 			//Формируем строку размера файла
 			$snippetResultArray['size'] = ddfsize_format(
 				$filesize,
-				$sizeNameFormat,
-				$sizePrecision
+				$params->sizeNameFormat,
+				$params->sizePrecision
 			);
 		}
 		
@@ -335,26 +340,26 @@ if (!empty($file)){
 		}
 		
 		//Если есть tpl, то парсим или возвращаем размер
-		if (isset($tpl)){
+		if (!empty($params->tpl)){
 			//Если есть дополнительные данные
-			if (isset($tpl_placeholders)){
-				$tpl_placeholders = \ddTools::encodedStringToArray($tpl_placeholders);
+			if (!empty($params->tpl_placeholders)){
+				$params->tpl_placeholders = \ddTools::encodedStringToArray($params->tpl_placeholders);
 				//Unfold for arrays support (e. g. “{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.a+]”, “[+somePlaceholder2.b+]”; “{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }” => “[+somePlaceholder1+]”, “[+somePlaceholder2.0+]”, “[somePlaceholder2.1]”)
-				$tpl_placeholders = \ddTools::unfoldArray($tpl_placeholders);
+				$params->tpl_placeholders = \ddTools::unfoldArray($params->tpl_placeholders);
 				
 				//Разбиваем их
 				$snippetResultArray = array_merge(
 					$snippetResultArray,
-					$tpl_placeholders
+					$params->tpl_placeholders
 				);
 			}
 			
 			$snippetResult = \ddTools::parseText([
-				'text' => $modx->getTpl($tpl),
+				'text' => $modx->getTpl($params->tpl),
 				'data' => $snippetResultArray
 			]);
 		}else{
-			$snippetResult = $snippetResultArray[$output];
+			$snippetResult = $snippetResultArray[$params->output];
 		}
 	}
 }
