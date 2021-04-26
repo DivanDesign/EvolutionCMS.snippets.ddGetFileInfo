@@ -38,7 +38,7 @@ class Snippet extends \DDTools\Snippet {
 	 * prepareParams
 	 * @version 1.1 (2021-04-25)
 	 * 
-	 * @param $this->params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
+	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
 	 * @return {void}
 	 */
