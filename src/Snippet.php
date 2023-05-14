@@ -64,7 +64,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2021-04-25)
+	 * @version 1.0.3 (2023-05-14)
 	 * 
 	 * @return {string}
 	 */
@@ -290,7 +290,7 @@ class Snippet extends \DDTools\Snippet {
 					}
 					
 					$result = \ddTools::parseText([
-						'text' => \ddTools::$modx->getTpl($this->params->tpl),
+						'text' => \ddTools::getTpl($this->params->tpl),
 						'data' => $snippetResultArray
 					]);
 				}else{
