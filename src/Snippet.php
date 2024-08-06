@@ -6,7 +6,7 @@ class Snippet extends \DDTools\Snippet {
 		$version = '2.5.0',
 		
 		$params = [
-			//Defaults
+			// Defaults
 			'file' => null,
 			'file_docField' => null,
 			'file_docId' => null,
@@ -36,17 +36,17 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.1 (2021-04-25)
+	 * @version 1.1.1 (2024-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
 	 * @return {void}
 	 */
 	protected function prepareParams($params = []){
-		//Call base method
+		// Call base method
 		parent::prepareParams($params);
 		
-		//Backward compatibility
+		// Backward compatibility
 		if (is_numeric($this->params->sizeUnitFormat)){
 			$this->params->sizeUnitFormat = strtr(
 				$this->params->sizeUnitFormat,
@@ -64,15 +64,15 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.3 (2023-05-14)
+	 * @version 1.0.4 (2024-08-06)
 	 * 
 	 * @return {string}
 	 */
 	public function run(){
-		//The snippet must return an empty string even if result is absent
+		// The snippet must return an empty string even if result is absent
 		$result = '';
 		
-		//Получаем имя файла из заданного поля
+		// Получаем имя файла из заданного поля
 		if (!empty($this->params->file_docField)){
 			$this->params->file = \ddTools::getTemplateVarOutput(
 				[
@@ -87,7 +87,7 @@ class Snippet extends \DDTools\Snippet {
 		if (!empty($this->params->file)){
 			$fileFullPathName = $this->params->file;
 			
-			//URL
+			// URL
 			if (
 				filter_var(
 					$fileFullPathName,
@@ -105,11 +105,11 @@ class Snippet extends \DDTools\Snippet {
 					true :
 					false
 				;
-			//File
+			// File
 			}else{
 				$isFileUrl = false;
 				
-				//If file doesn't contain base path
+				// If file doesn't contain base path
 				if (
 					substr(
 						$fileFullPathName,
@@ -118,13 +118,13 @@ class Snippet extends \DDTools\Snippet {
 					) !=
 					\ddTools::$modx->getConfig('base_path')
 				){
-					//Всегда удаляем слэш слева
+					// Всегда удаляем слэш слева
 					$fileFullPathName = ltrim(
 						$fileFullPathName,
 						'/'
 					);
 					
-					//Add it
+					// Add it
 					$fileFullPathName =
 						\ddTools::$modx->getConfig('base_path') .
 						$fileFullPathName
@@ -144,28 +144,28 @@ class Snippet extends \DDTools\Snippet {
 					'/'
 				);
 				
-				//TODO: Использовать класс «SplFileInfo»
+				// TODO: Использовать класс «SplFileInfo»
 				$snippetResultArray = [
-					//Полный адрес файла
+					// Полный адрес файла
 					'file' => $this->params->file,
-					//Размер
+					// Размер
 					'size' => '',
-					//Расширение
+					// Расширение
 					'extension' => substr(
 						$this->params->file,
 						$extensionPos + 1
 					),
-					//«Тип» файла
+					// «Тип» файла
 					'type' => '',
-					//Type in MIME format
+					// Type in MIME format
 					'typeMime' => '',
-					//Имя файла
+					// Имя файла
 					'name' => substr(
 						$this->params->file,
 						$dirPos + 1,
 						$extensionPos - $dirPos - 1
 					),
-					//Путь к файлу
+					// Путь к файлу
 					'path' => substr(
 						$this->params->file,
 						0,
@@ -176,11 +176,11 @@ class Snippet extends \DDTools\Snippet {
 				$filesize = false;
 				
 				if (!$isFileUrl){
-					//Пробуем получить размер файла
+					// Пробуем получить размер файла
 					$filesize = @filesize($fileFullPathName);
 					
 					$snippetResultArray['typeMime'] =
-						//If it's SVG
+						// If it's SVG
 						in_array(
 							$snippetResultArray['extension'],
 							[
@@ -188,16 +188,16 @@ class Snippet extends \DDTools\Snippet {
 								'svgz'
 							]
 						) ?
-						//Assign manually because mime_content_type is not working correct in this case
+						// Assign manually because mime_content_type is not working correct in this case
 						'image/svg+xml' :
-						//Call default PHP function
+						// Call default PHP function
 						mime_content_type($fileFullPathName)
 					;
 				}
 				
-				//Если вышло
+				// Если вышло
 				if ($filesize !== false){
-					//Формируем строку размера файла
+					// Формируем строку размера файла
 					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
 						'size' => $filesize,
 						'unitFormat' => $this->params->sizeUnitFormat,
@@ -205,7 +205,7 @@ class Snippet extends \DDTools\Snippet {
 					]);
 				}
 				
-				//Пытаемся определить тип файла
+				// Пытаемся определить тип файла
 				switch (strtolower($snippetResultArray['extension'])){
 					case 'zip':
 					case '7z':
@@ -277,9 +277,9 @@ class Snippet extends \DDTools\Snippet {
 					break;
 				}
 				
-				//Если есть tpl, то парсим или возвращаем размер
+				// Если есть tpl, то парсим или возвращаем размер
 				if (!empty($this->params->tpl)){
-					//Если есть дополнительные данные
+					// Если есть дополнительные данные
 					if (!empty($this->params->tpl_placeholders)){
 						$snippetResultArray = \DDTools\ObjectTools::extend([
 							'objects' => [
@@ -304,7 +304,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * getFileSizeInHumanFormat
-	 * @version 1.0.1 (2021-04-25)
+	 * @version 1.0.2 (2024-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * @param $params->size {integer} — File size in bytes.
@@ -319,7 +319,7 @@ class Snippet extends \DDTools\Snippet {
 			'type' => 'objectStdClass'
 		]);
 		
-		//Устанавливаем конфигурацию вывода приставок
+		// Устанавливаем конфигурацию вывода приставок
 		if ($params->unitFormat == 'none'){
 			$mas = [
 				'',

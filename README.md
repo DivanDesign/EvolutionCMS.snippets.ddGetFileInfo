@@ -38,13 +38,13 @@ Displays information about a file: type, mime, size in readable format, path, na
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddInstaller/require.php'
 );
 
-//Install (MODX)EvolutionCMS.snippets.ddGetFileInfo
+// Install (MODX)EvolutionCMS.snippets.ddGetFileInfo
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo',
 	'type' => 'snippet'
@@ -148,13 +148,13 @@ require_once(
 #### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Run (MODX)EvolutionCMS.snippets.ddGetFileInfo
+// Run (MODX)EvolutionCMS.snippets.ddGetFileInfo
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetFileInfo',
 	'params' => [
