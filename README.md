@@ -12,24 +12,6 @@ Displays information about a file: type, mime, size in readable format, path, na
 ## Installation
 
 
-### Manually
-
-
-#### 1. Elements → Snippets: Create a new snippet with the following data
-
-1. Snippet name: `ddGetFileInfo`.
-2. Description: `<b>2.5</b> Displays information about a file: type, mime, size in readable format, path, name, extension, etc.`.
-3. Category: `Core`.
-4. Parse DocBlock: `no`.
-5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
-
-
-#### 2. Elements → Manage Files
-
-1. Create a new folder `assets/snippets/ddGetFileInfo/`.
-2. Extract the archive to the folder (except `ddGetFileInfo_snippet.php`).
-
-
 ### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
@@ -49,6 +31,24 @@ require_once(
 
 * If `ddGetFileInfo` is not exist on your site, `ddInstaller` will just install it.
 * If `ddGetFileInfo` is already exist on your site, `ddInstaller` will check it version and update it if needed.
+
+
+### Manually
+
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
+
+1. Snippet name: `ddGetFileInfo`.
+2. Description: `<b>2.5</b> Displays information about a file: type, mime, size in readable format, path, name, extension, etc.`.
+3. Category: `Core`.
+4. Parse DocBlock: `no`.
+5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
+
+
+#### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddGetFileInfo/`.
+2. Extract the archive to the folder (except `ddGetFileInfo_snippet.php`).
 
 
 ## Parameters description
