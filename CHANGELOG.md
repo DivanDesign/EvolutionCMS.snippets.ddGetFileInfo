@@ -1,6 +1,14 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 
+## Version 2.5.1 (2025-06-17)
+
+* \* Refactoring and other small changes.
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* \* Attention! PHP >= 7.4 is required (not tested with older versions).
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.60 is required.
+
+
 ## Version 2.5 (2021-04-25)
 
 * \* Attention! PHP >= 5.6 is required.

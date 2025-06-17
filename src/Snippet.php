@@ -2,7 +2,7 @@
 namespace ddGetFileInfo;
 
 class Snippet extends \DDTools\Snippet {
-	protected $version = '2.5.0';
+	protected $version = '2.5.1';
 	
 	protected $params = [
 		// Defaults

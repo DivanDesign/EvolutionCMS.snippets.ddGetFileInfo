@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetfileinfo",
 	"type": "modxevo-snippet",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"description": "Displays information about a file: type, mime, size in readable format, path, name, extension, etc.",
 	"keywords": [
 		"modx",
