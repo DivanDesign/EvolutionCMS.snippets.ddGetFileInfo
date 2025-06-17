@@ -2,37 +2,35 @@
 namespace ddGetFileInfo;
 
 class Snippet extends \DDTools\Snippet {
-	protected
-		$version = '2.5.0',
+	protected $version = '2.5.0';
+	
+	protected $params = [
+		// Defaults
+		'file' => null,
+		'file_docField' => null,
+		'file_docId' => null,
+		'sizeUnitFormat' => 'EnShort',
+		'sizePrecision' => 2,
+		'output' => 'size',
+		'tpl' => null,
+		'tpl_placeholders' => null,
+	];
 		
-		$params = [
-			// Defaults
-			'file' => null,
-			'file_docField' => null,
-			'file_docId' => null,
-			'sizeUnitFormat' => 'EnShort',
-			'sizePrecision' => 2,
-			'output' => 'size',
-			'tpl' => null,
-			'tpl_placeholders' => null
+	protected $paramsTypes = [
+		'sizePrecision' => 'integer',
+		'tpl_placeholders' => 'objectArray',
+	];
+		
+	protected $renamedParamsCompliance = [
+		'file_docField' => 'docField',
+		'file_docId' => 'docId',
+		'sizeUnitFormat' => [
+			'sizeNameFormat',
+			'sizeType',
 		],
-		
-		$paramsTypes = [
-			'sizePrecision' => 'integer',
-			'tpl_placeholders' => 'objectArray'
-		],
-		
-		$renamedParamsCompliance = [
-			'file_docField' => 'docField',
-			'file_docId' => 'docId',
-			'sizeUnitFormat' => [
-				'sizeNameFormat',
-				'sizeType'
-			],
-			'sizePrecision' => 'sizePrec',
-			'tpl_placeholders' => 'placeholders'
-		]
-	;
+		'sizePrecision' => 'sizePrec',
+		'tpl_placeholders' => 'placeholders',
+	];
 	
 	/**
 	 * prepareParams
@@ -64,7 +62,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.4 (2024-08-06)
+	 * @version 1.0.5 (2025-06-17)
 	 * 
 	 * @return {string}
 	 */
@@ -76,7 +74,7 @@ class Snippet extends \DDTools\Snippet {
 		if (!empty($this->params->file_docField)){
 			$this->params->file = \ddTools::getTemplateVarOutput(
 				[
-					$this->params->file_docField
+					$this->params->file_docField,
 				],
 				$this->params->file_docId
 			);
@@ -185,7 +183,7 @@ class Snippet extends \DDTools\Snippet {
 							$snippetResultArray['extension'],
 							[
 								'svg',
-								'svgz'
+								'svgz',
 							]
 						) ?
 						// Assign manually because mime_content_type is not working correct in this case
@@ -201,7 +199,7 @@ class Snippet extends \DDTools\Snippet {
 					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
 						'size' => $filesize,
 						'unitFormat' => $this->params->sizeUnitFormat,
-						'precision' => $this->params->sizePrecision
+						'precision' => $this->params->sizePrecision,
 					]);
 				}
 				
@@ -284,14 +282,14 @@ class Snippet extends \DDTools\Snippet {
 						$snippetResultArray = \DDTools\ObjectTools::extend([
 							'objects' => [
 								$snippetResultArray,
-								$this->params->tpl_placeholders
-							]
+								$this->params->tpl_placeholders,
+							],
 						]);
 					}
 					
 					$result = \ddTools::parseText([
 						'text' => \ddTools::getTpl($this->params->tpl),
-						'data' => $snippetResultArray
+						'data' => $snippetResultArray,
 					]);
 				}else{
 					$result = $snippetResultArray[$this->params->output];
@@ -304,7 +302,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * getFileSizeInHumanFormat
-	 * @version 1.0.2 (2024-08-06)
+	 * @version 1.0.3 (2025-06-17)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * @param $params->size {integer} — File size in bytes.
@@ -328,7 +326,7 @@ class Snippet extends \DDTools\Snippet {
 				'',
 				'',
 				'',
-				''
+				'',
 			];
 		}elseif ($params->unitFormat == 'rushort'){
 			$mas = [
@@ -338,7 +336,7 @@ class Snippet extends \DDTools\Snippet {
 				' Гб',
 				' Тб',
 				' Пб',
-				' Эб'
+				' Эб',
 			];
 		}elseif ($params->unitFormat == 'rufull'){
 			$mas = [
@@ -348,7 +346,7 @@ class Snippet extends \DDTools\Snippet {
 				' Гигабайт',
 				' Терабайт',
 				' Петабайт',
-				' Эксабайт'
+				' Эксабайт',
 			];
 		}elseif ($params->unitFormat == 'enshort'){
 			$mas = [
@@ -358,7 +356,7 @@ class Snippet extends \DDTools\Snippet {
 				' GB',
 				' TB',
 				' PB',
-				' EB'
+				' EB',
 			];
 		}elseif ($params->unitFormat == 'enfull'){
 			$mas = [
@@ -368,14 +366,14 @@ class Snippet extends \DDTools\Snippet {
 				' Gigabytes',
 				' Terabytes',
 				' Petabytes',
-				' Exabytes'
+				' Exabytes',
 			];
 		}
 		
 		$i = 0;
 		while (
-			($params->size / 1024) >=
-			1
+			($params->size / 1024)
+			>= 1
 		){
 			$params->size = $params->size / 1024;
 			$i++;
@@ -385,8 +383,8 @@ class Snippet extends \DDTools\Snippet {
 			round(
 				$params->size,
 				$params->precision
-			) .
-			$mas[$i]
+			)
+			. $mas[$i]
 		;
 	}
 }

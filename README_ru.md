@@ -40,14 +40,13 @@
 ```php
 // Подключение (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddInstaller/require.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddInstaller/require.php'
 );
 
 // Установка (MODX)EvolutionCMS.snippets.ddGetFileInfo
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo',
-	'type' => 'snippet'
 ]);
 ```
 
@@ -150,8 +149,8 @@ require_once(
 ```php
 // Подключение (MODX)EvolutionCMS.libraries.ddTools
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
 // Запуск (MODX)EvolutionCMS.snippets.ddGetFileInfo
@@ -159,8 +158,8 @@ require_once(
 	'name' => 'ddGetFileInfo',
 	'params' => [
 		'file' => 'assets/images/evo-logo.png',
-		'output' => 'size'
-	]
+		'output' => 'size',
+	],
 ]);
 ```
 
