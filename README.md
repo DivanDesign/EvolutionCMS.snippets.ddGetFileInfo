@@ -74,8 +74,8 @@ require_once(
 	* Default value: —
 	
 * `sizeUnitFormat`
-	* Description: Format of file size unit.  
-		Values are case insensitive (the following names are equal: `'enshort'`, `'EnShort'`, `'ENSHORT'`, etc).
+	* Description: Format of file size unit.
+		* Values are case insensitive (the following names are equal: `'enshort'`, `'EnShort'`, `'ENSHORT'`, etc).
 	* Valid values:
 		* `'none'`
 		* `'EnShort'` — e. g. `MB`
@@ -101,36 +101,35 @@ require_once(
 	* Default value: `'size'`
 	
 * `tpl`
-	* Description: Output template (if the parameter is absent, file data corresponding to `output` will be returned).  
-		Available placeholders:
-		* `[+file+]` — full file address
-		* `[+name+]` — file name
-		* `[+path+]` — file path
-		* `[+size+]` — file size with a unit in a human-readable format
-		* `[+extension+]` — file extension
-		* `[+type+]` — file type:
-			* `'archive'`
-			* `'image'`
-			* `'video'`
-			* `'audio'`
-			* `'text'`
-			* `'pdf'`
-			* `'word'`
-			* `'excel'`
-			* `'powerpoint'`
-		* `[+typeMime+]` — content type in MIME format (only for local files, not for URLs)
+	* Description: Output template (if the parameter is absent, file data corresponding to `output` will be returned).
+		* Available placeholders:
+			* `[+file+]` — full file address
+			* `[+name+]` — file name
+			* `[+path+]` — file path
+			* `[+size+]` — file size with a unit in a human-readable format
+			* `[+extension+]` — file extension
+			* `[+type+]` — file type:
+				* `'archive'`
+				* `'image'`
+				* `'video'`
+				* `'audio'`
+				* `'text'`
+				* `'pdf'`
+				* `'word'`
+				* `'excel'`
+				* `'powerpoint'`
+			* `[+typeMime+]` — content type in MIME format (only for local files, not for URLs)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `tpl_placeholders`
-	* Description:
-		Additional data has to be passed into the `tpl`.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Description: Additional data has to be passed into the `tpl`.
+		* Nested objects and arrays are supported too:
+			* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+			* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+			* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
