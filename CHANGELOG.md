@@ -1,7 +1,16 @@
 # (MODX)EvolutionCMS.snippets.ddGetFileInfo changelog
 
 
+## Version 2.5.1 (2025-06-17)
+
+* \* Refactoring and other small changes.
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* \* Attention! PHP >= 7.4 is required (not tested with older versions).
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.60 is required.
+
+
 ## Version 2.5 (2021-04-25)
+
 * \* Attention! PHP >= 5.6 is required.
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.49 is required.
 * \* Parameters:
@@ -23,6 +32,7 @@
 
 
 ## Version 2.4 (2021-01-15)
+
 * \+ The ability to return the MIME content type for a file (see the `tpl` parameter).
 * \* Parameters → `tpl`: Wrong `[+file+]` placeholder was fixed.
 * \+ README, CHANGELOG: Style improvements.
@@ -30,16 +40,19 @@
 
 
 ## Version 2.3 (2019-12-12)
+
 * \+ If `file` doesn't contain base path, the snippet will add it.
 * \* `fopen` is not used anymore because `@` operator doesn't always work.
 * \* `filesize` is used only for local files, not for URLs. `@` steel used because not only URLs will generate errors.
 
 
 ## Version 2.2.1 (2018-11-24)
+
 * \* Critical variable name error was fixed.
 
 
 ## Version 2.2 (2018-11-24)
+
 * \* Attention! PHP >= 5.4 is required.
 * \* Attention! MODXEvo >= 1.1 is required.
 * \* Attention! MODXEvo.libraries.ddTools >= 0.18 is required.
@@ -58,8 +71,9 @@
 
 
 ## Version 1.0 (2010)
+
 * \+ The first release.
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>

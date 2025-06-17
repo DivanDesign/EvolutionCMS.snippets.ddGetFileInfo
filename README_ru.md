@@ -4,50 +4,28 @@
 
 
 ## Использует
-* PHP >= 5.6
+* PHP >= 7.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.49
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.60
 
 
-## Документация
+## Установка
 
 
-### Установка
-
-
-#### Вручную
-
-
-##### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
-
-1. Название сниппета: `ddGetFileInfo`.
-2. Описание: `<b>2.5</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
-3. Категория: `Core`.
-4. Анализировать DocBlock: `no`.
-5. Код сниппета (php): Вставьте содержимое файла `ddGetFileInfo_snippet.php` из архива.
-
-
-##### 2. Элементы → Управление файлами
-
-1. Создайте новую папку `assets/snippets/ddGetFileInfo/`.
-2. Извлеките содержимое архива в неё (кроме файла `ddGetFileInfo_snippet.php`).
-
-
-#### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Просто вызовите следующий код в своих исходинках или модуле [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Подключение (MODX)EvolutionCMS.libraries.ddInstaller
+// Подключение (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddInstaller/require.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddInstaller/require.php'
 );
 
-//Установка (MODX)EvolutionCMS.snippets.ddGetFileInfo
+// Установка (MODX)EvolutionCMS.snippets.ddGetFileInfo
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo',
-	'type' => 'snippet'
 ]);
 ```
 
@@ -55,7 +33,25 @@ require_once(
 * Если `ddGetFileInfo` уже есть на вашем сайте, `ddInstaller` проверит его версию и обновит, если нужно. 
 
 
-### Описание параметров
+### Вручную
+
+
+#### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
+
+1. Название сниппета: `ddGetFileInfo`.
+2. Описание: `<b>2.5.1</b> Выводит информацию о фале: размер, имя, расширение и пр.`.
+3. Категория: `Core`.
+4. Анализировать DocBlock: `no`.
+5. Код сниппета (php): Вставьте содержимое файла `ddGetFileInfo_snippet.php` из архива.
+
+
+#### 2. Элементы → Управление файлами
+
+1. Создайте новую папку `assets/snippets/ddGetFileInfo/`.
+2. Извлеките содержимое архива в неё (кроме файла `ddGetFileInfo_snippet.php`).
+
+
+## Описание параметров
 
 * `file`
 	* Описание: Имя файла (путь).
@@ -75,8 +71,8 @@ require_once(
 	* Значение по умолчанию: —
 	
 * `sizeUnitFormat`
-	* Описание: Формат вывода единицы измерения размера файла.  
-		Значения регистронезависимы (следующие значения равны: `'enshort'`, `'EnShort'`, `'ENSHORT'` и т. п.).
+	* Описание: Формат вывода единицы измерения размера файла.
+		* Значения регистронезависимы (следующие значения равны: `'enshort'`, `'EnShort'`, `'ENSHORT'` и т. п.).
 	* Допустимые значения:
 		* `'none'`
 		* `'EnShort'` — e. g. `MB`
@@ -102,65 +98,64 @@ require_once(
 	* Значение по умолчанию: `'size'`
 	
 * `tpl`
-	* Описание: Шаблон для вывода (без шаблона возвращает согласно параметру `output`).  
-		Доступные плейсхолдеры:
-		* `[+file+]` — полный адрес файла
-		* `[+name+]` — имя файла
-		* `[+path+]` — путь к файлу
-		* `[+size+]` — размер файла с единицей измерения в удобочитаемом формате
-		* `[+extension+]` — расширение файла
-		* `[+type+]` — тип файла:
-			* `'archive'`
-			* `'image'`
-			* `'video'`
-			* `'audio'`
-			* `'text'`
-			* `'pdf'`
-			* `'word'`
-			* `'excel'`
-			* `'powerpoint'`
-		* `[+typeMime+]` — тип содержимого в формате MIME (только для локальных файлов, не для URL-адресов)
+	* Описание: Шаблон для вывода (без шаблона возвращает согласно параметру `output`).
+		* Доступные плейсхолдеры:
+			* `[+file+]` — полный адрес файла
+			* `[+name+]` — имя файла
+			* `[+path+]` — путь к файлу
+			* `[+size+]` — размер файла с единицей измерения в удобочитаемом формате
+			* `[+extension+]` — расширение файла
+			* `[+type+]` — тип файла:
+				* `'archive'`
+				* `'image'`
+				* `'video'`
+				* `'audio'`
+				* `'text'`
+				* `'pdf'`
+				* `'word'`
+				* `'excel'`
+				* `'powerpoint'`
+			* `[+typeMime+]` — тип содержимого в формате MIME (только для локальных файлов, не для URL-адресов)
 	* Допустимые значения:
 		* `stringChunkName`
 		* `string` — передавать код напрямую без чанка можно начиная значение с `@CODE:`
 	* Значение по умолчанию: —
 	
 * `tpl_placeholders`
-	* Описание:
-		Дополнительные данные, которые будут переданы в шаблон `tpl`.  
-		Вложенные объекты и массивы также поддерживаются:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Описание: Дополнительные данные, которые будут переданы в шаблон `tpl`.
+		* Вложенные объекты и массивы также поддерживаются:
+			* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+			* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+			* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Допустимые значения:
 		* `stringJsonObject` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — в виде [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — в виде [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — в виде [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* Также может быть задан, как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
 			* `arrayAssociative`
 			* `object`
 	* Значение по умолчанию: —
 
 
-### Примеры
+## Примеры
 
 
-#### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
+### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
 
 ```php
-//Подключение (MODX)EvolutionCMS.libraries.ddTools
+// Подключение (MODX)EvolutionCMS.libraries.ddTools
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Запуск (MODX)EvolutionCMS.snippets.ddGetFileInfo
+// Запуск (MODX)EvolutionCMS.snippets.ddGetFileInfo
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetFileInfo',
 	'params' => [
 		'file' => 'assets/images/evo-logo.png',
-		'output' => 'size'
-	]
+		'output' => 'size',
+	],
 ]);
 ```
 
@@ -170,6 +165,7 @@ require_once(
 * [Home page](https://code.divandesign.ru/modx/ddgetfileinfo)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetfileinfo)
+* [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo)
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />

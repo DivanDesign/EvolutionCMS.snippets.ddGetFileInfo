@@ -2,51 +2,49 @@
 namespace ddGetFileInfo;
 
 class Snippet extends \DDTools\Snippet {
-	protected
-		$version = '2.5.0',
+	protected $version = '2.5.1';
+	
+	protected $params = [
+		// Defaults
+		'file' => null,
+		'file_docField' => null,
+		'file_docId' => null,
+		'sizeUnitFormat' => 'EnShort',
+		'sizePrecision' => 2,
+		'output' => 'size',
+		'tpl' => null,
+		'tpl_placeholders' => null,
+	];
 		
-		$params = [
-			//Defaults
-			'file' => null,
-			'file_docField' => null,
-			'file_docId' => null,
-			'sizeUnitFormat' => 'EnShort',
-			'sizePrecision' => 2,
-			'output' => 'size',
-			'tpl' => null,
-			'tpl_placeholders' => null
+	protected $paramsTypes = [
+		'sizePrecision' => 'integer',
+		'tpl_placeholders' => 'objectArray',
+	];
+		
+	protected $renamedParamsCompliance = [
+		'file_docField' => 'docField',
+		'file_docId' => 'docId',
+		'sizeUnitFormat' => [
+			'sizeNameFormat',
+			'sizeType',
 		],
-		
-		$paramsTypes = [
-			'sizePrecision' => 'integer',
-			'tpl_placeholders' => 'objectArray'
-		],
-		
-		$renamedParamsCompliance = [
-			'file_docField' => 'docField',
-			'file_docId' => 'docId',
-			'sizeUnitFormat' => [
-				'sizeNameFormat',
-				'sizeType'
-			],
-			'sizePrecision' => 'sizePrec',
-			'tpl_placeholders' => 'placeholders'
-		]
-	;
+		'sizePrecision' => 'sizePrec',
+		'tpl_placeholders' => 'placeholders',
+	];
 	
 	/**
 	 * prepareParams
-	 * @version 1.1 (2021-04-25)
+	 * @version 1.1.1 (2024-08-06)
 	 * 
-	 * @param $this->params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
+	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
 	 * @return {void}
 	 */
 	protected function prepareParams($params = []){
-		//Call base method
+		// Call base method
 		parent::prepareParams($params);
 		
-		//Backward compatibility
+		// Backward compatibility
 		if (is_numeric($this->params->sizeUnitFormat)){
 			$this->params->sizeUnitFormat = strtr(
 				$this->params->sizeUnitFormat,
@@ -64,19 +62,19 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2021-04-25)
+	 * @version 1.0.7 (2025-06-17)
 	 * 
 	 * @return {string}
 	 */
 	public function run(){
-		//The snippet must return an empty string even if result is absent
+		// The snippet must return an empty string even if result is absent
 		$result = '';
 		
-		//Получаем имя файла из заданного поля
+		// Получаем имя файла из заданного поля
 		if (!empty($this->params->file_docField)){
 			$this->params->file = \ddTools::getTemplateVarOutput(
 				[
-					$this->params->file_docField
+					$this->params->file_docField,
 				],
 				$this->params->file_docId
 			);
@@ -87,7 +85,7 @@ class Snippet extends \DDTools\Snippet {
 		if (!empty($this->params->file)){
 			$fileFullPathName = $this->params->file;
 			
-			//URL
+			// URL
 			if (
 				filter_var(
 					$fileFullPathName,
@@ -105,11 +103,11 @@ class Snippet extends \DDTools\Snippet {
 					true :
 					false
 				;
-			//File
+			// File
 			}else{
 				$isFileUrl = false;
 				
-				//If file doesn't contain base path
+				// If file doesn't contain base path
 				if (
 					substr(
 						$fileFullPathName,
@@ -118,13 +116,13 @@ class Snippet extends \DDTools\Snippet {
 					) !=
 					\ddTools::$modx->getConfig('base_path')
 				){
-					//Всегда удаляем слэш слева
+					// Всегда удаляем слэш слева
 					$fileFullPathName = ltrim(
 						$fileFullPathName,
 						'/'
 					);
 					
-					//Add it
+					// Add it
 					$fileFullPathName =
 						\ddTools::$modx->getConfig('base_path') .
 						$fileFullPathName
@@ -144,28 +142,28 @@ class Snippet extends \DDTools\Snippet {
 					'/'
 				);
 				
-				//TODO: Использовать класс «SplFileInfo»
-				$snippetResultArray = [
-					//Полный адрес файла
+				// TODO: Использовать класс «SplFileInfo»
+				$snippetResultObject = (object) [
+					// Полный адрес файла
 					'file' => $this->params->file,
-					//Размер
+					// Размер
 					'size' => '',
-					//Расширение
+					// Расширение
 					'extension' => substr(
 						$this->params->file,
 						$extensionPos + 1
 					),
-					//«Тип» файла
+					// «Тип» файла
 					'type' => '',
-					//Type in MIME format
+					// Type in MIME format
 					'typeMime' => '',
-					//Имя файла
+					// Имя файла
 					'name' => substr(
 						$this->params->file,
 						$dirPos + 1,
 						$extensionPos - $dirPos - 1
 					),
-					//Путь к файлу
+					// Путь к файлу
 					'path' => substr(
 						$this->params->file,
 						0,
@@ -176,125 +174,56 @@ class Snippet extends \DDTools\Snippet {
 				$filesize = false;
 				
 				if (!$isFileUrl){
-					//Пробуем получить размер файла
+					// Пробуем получить размер файла
 					$filesize = @filesize($fileFullPathName);
 					
-					$snippetResultArray['typeMime'] =
-						//If it's SVG
+					$snippetResultObject->typeMime =
+						// If it's SVG
 						in_array(
-							$snippetResultArray['extension'],
+							$snippetResultObject->extension,
 							[
 								'svg',
-								'svgz'
+								'svgz',
 							]
 						) ?
-						//Assign manually because mime_content_type is not working correct in this case
+						// Assign manually because mime_content_type is not working correct in this case
 						'image/svg+xml' :
-						//Call default PHP function
+						// Call default PHP function
 						mime_content_type($fileFullPathName)
 					;
 				}
 				
-				//Если вышло
+				// Если вышло
 				if ($filesize !== false){
-					//Формируем строку размера файла
-					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
+					// Формируем строку размера файла
+					$snippetResultObject->size = $this->getFileSizeInHumanFormat([
 						'size' => $filesize,
 						'unitFormat' => $this->params->sizeUnitFormat,
-						'precision' => $this->params->sizePrecision
+						'precision' => $this->params->sizePrecision,
 					]);
 				}
 				
-				//Пытаемся определить тип файла
-				switch (strtolower($snippetResultArray['extension'])){
-					case 'zip':
-					case '7z':
-					case 'tar':
-					case 'gz':
-					case 'rar':
-						$snippetResultArray['type'] = 'archive';
-					break;
-					
-					case 'jpg':
-					case 'jpeg':
-					case 'png':
-					case 'gif':
-					case 'bmp':
-					case 'tif':
-					case 'tiff':
-					case 'webp':
-						$snippetResultArray['type'] = 'image';
-					break;
-					
-					case 'webm':
-					case 'mkv':
-					case 'ogv':
-					case 'avi':
-					case 'wmv':
-					case 'flv':
-					case 'mpg':
-					case 'mpeg':
-					case 'mp4':
-					case 'm4v':
-						$snippetResultArray['type'] = 'video';
-					break;
-					
-					case 'flac':
-					case 'ape':
-					case 'wav':
-					case 'aiff':
-					case 'wma':
-					case 'mp3':
-					case 'oga':
-						$snippetResultArray['type'] = 'audio';
-					break;
-					
-					case 'txt':
-						$snippetResultArray['type'] = 'text';
-					break;
-					
-					case 'pdf':
-						$snippetResultArray['type'] = 'pdf';
-					break;
-					
-					case 'doc':
-					case 'docx':
-						$snippetResultArray['type'] = 'word';
-					break;
-					
-					case 'xls':
-					case 'xlsx':
-					case 'xlsm':
-					case 'xlsb':
-						$snippetResultArray['type'] = 'excel';
-					break;
-					
-					case 'ppt':
-					case 'pptx':
-					case 'pps':
-					case 'ppsx':
-						$snippetResultArray['type'] = 'powerpoint';
-					break;
-				}
+				// Пытаемся определить тип файла
+				$snippetResultObject->type = $this->getFileTypeByExtension($snippetResultObject->extension);
 				
-				//Если есть tpl, то парсим или возвращаем размер
+				// Если есть tpl, то парсим или возвращаем размер
 				if (!empty($this->params->tpl)){
-					//Если есть дополнительные данные
+					// Если есть дополнительные данные
 					if (!empty($this->params->tpl_placeholders)){
-						$snippetResultArray = \DDTools\ObjectTools::extend([
+						$snippetResultObject = \DDTools\ObjectTools::extend([
 							'objects' => [
-								$snippetResultArray,
-								$this->params->tpl_placeholders
-							]
+								$snippetResultObject,
+								$this->params->tpl_placeholders,
+							],
 						]);
 					}
 					
 					$result = \ddTools::parseText([
-						'text' => \ddTools::$modx->getTpl($this->params->tpl),
-						'data' => $snippetResultArray
+						'text' => \ddTools::getTpl($this->params->tpl),
+						'data' => $snippetResultObject,
 					]);
 				}else{
-					$result = $snippetResultArray[$this->params->output];
+					$result = $snippetResultObject->{$this->params->output};
 				}
 			}
 		}
@@ -304,7 +233,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * getFileSizeInHumanFormat
-	 * @version 1.0.1 (2021-04-25)
+	 * @version 1.0.3 (2025-06-17)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * @param $params->size {integer} — File size in bytes.
@@ -319,7 +248,7 @@ class Snippet extends \DDTools\Snippet {
 			'type' => 'objectStdClass'
 		]);
 		
-		//Устанавливаем конфигурацию вывода приставок
+		// Устанавливаем конфигурацию вывода приставок
 		if ($params->unitFormat == 'none'){
 			$mas = [
 				'',
@@ -328,7 +257,7 @@ class Snippet extends \DDTools\Snippet {
 				'',
 				'',
 				'',
-				''
+				'',
 			];
 		}elseif ($params->unitFormat == 'rushort'){
 			$mas = [
@@ -338,7 +267,7 @@ class Snippet extends \DDTools\Snippet {
 				' Гб',
 				' Тб',
 				' Пб',
-				' Эб'
+				' Эб',
 			];
 		}elseif ($params->unitFormat == 'rufull'){
 			$mas = [
@@ -348,7 +277,7 @@ class Snippet extends \DDTools\Snippet {
 				' Гигабайт',
 				' Терабайт',
 				' Петабайт',
-				' Эксабайт'
+				' Эксабайт',
 			];
 		}elseif ($params->unitFormat == 'enshort'){
 			$mas = [
@@ -358,7 +287,7 @@ class Snippet extends \DDTools\Snippet {
 				' GB',
 				' TB',
 				' PB',
-				' EB'
+				' EB',
 			];
 		}elseif ($params->unitFormat == 'enfull'){
 			$mas = [
@@ -368,14 +297,14 @@ class Snippet extends \DDTools\Snippet {
 				' Gigabytes',
 				' Terabytes',
 				' Petabytes',
-				' Exabytes'
+				' Exabytes',
 			];
 		}
 		
 		$i = 0;
 		while (
-			($params->size / 1024) >=
-			1
+			($params->size / 1024)
+			>= 1
 		){
 			$params->size = $params->size / 1024;
 			$i++;
@@ -385,8 +314,93 @@ class Snippet extends \DDTools\Snippet {
 			round(
 				$params->size,
 				$params->precision
-			) .
-			$mas[$i]
+			)
+			. $mas[$i]
 		;
+	}
+	
+	/**
+	 * getFileTypeByExtension
+	 * @version 1.0.0 (2025-06-17)
+	 * 
+	 * @param $extension {string} — File extension.
+	 * 
+	 * @return {string}
+	 */
+	private function getFileTypeByExtension(string $extension) :string {
+		$result = '';
+		
+		switch (strtolower($extension)){
+			case 'zip':
+			case '7z':
+			case 'tar':
+			case 'gz':
+			case 'rar':
+				$result = 'archive';
+			break;
+			
+			case 'jpg':
+			case 'jpeg':
+			case 'png':
+			case 'gif':
+			case 'bmp':
+			case 'tif':
+			case 'tiff':
+			case 'webp':
+				$result = 'image';
+			break;
+			
+			case 'webm':
+			case 'mkv':
+			case 'ogv':
+			case 'avi':
+			case 'wmv':
+			case 'flv':
+			case 'mpg':
+			case 'mpeg':
+			case 'mp4':
+			case 'm4v':
+				$result = 'video';
+			break;
+			
+			case 'flac':
+			case 'ape':
+			case 'wav':
+			case 'aiff':
+			case 'wma':
+			case 'mp3':
+			case 'oga':
+				$result = 'audio';
+			break;
+			
+			case 'txt':
+				$result = 'text';
+			break;
+			
+			case 'pdf':
+				$result = 'pdf';
+			break;
+			
+			case 'doc':
+			case 'docx':
+				$result = 'word';
+			break;
+			
+			case 'xls':
+			case 'xlsx':
+			case 'xlsm':
+			case 'xlsb':
+				$result = 'excel';
+			break;
+			
+			case 'ppt':
+			case 'pptx':
+			case 'pps':
+			case 'ppsx':
+				$result = 'powerpoint';
+			break;
+		}
+		
+		return $result;
 	}
 }
