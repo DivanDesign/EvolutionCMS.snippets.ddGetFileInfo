@@ -6,7 +6,7 @@ Displays information about a file: type, mime, size in readable format, path, na
 ## Requires
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.60
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.60
 
 
 ## Installation
@@ -162,7 +162,7 @@ require_once(
 
 ## Links
 
-* [Home page](https://code.divandesign.biz/modx/ddgetfileinfo)
+* [Home page](https://code.divandesign.ru/modx/ddgetfileinfo)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetfileinfo)
 * [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetFileInfo)
