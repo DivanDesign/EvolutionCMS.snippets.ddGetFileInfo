@@ -57,24 +57,24 @@ require_once(
 ### Parameters description
 
 * `file`
-	* Desctription: File name (path).
+	* Description: File name (path).
 	* Valid values:
 		* `stringFilePath` — the path to the file can be specified relative to the site root (`/` at the beginning does not matter, both variants are supported), or the full path (including `$modx->config['base_path']`)
 		* `stringUrl` — you can specify not only a local file, but also an Internet address, but in this case not all functions are supported for objective reasons
 	* **Required**
 	
 * `file_docField`
-	* Desctription: A document field (including TV) containing the path to the file (if you want the snippet to get the file address from the document field).
+	* Description: A document field (including TV) containing the path to the file (if you want the snippet to get the file address from the document field).
 	* Valid values: `string`
 	* Default value: —
 	
 * `file_docId`
-	* Desctription: Resource ID, from the field of which you want to get the file address.
+	* Description: Resource ID, from the field of which you want to get the file address.
 	* Valid values: `integerDocId`
 	* Default value: —
 	
 * `sizeUnitFormat`
-	* Desctription: Format of file size unit.  
+	* Description: Format of file size unit.  
 		Values are case insensitive (the following names are equal: `'enshort'`, `'EnShort'`, `'ENSHORT'`, etc).
 	* Valid values:
 		* `'none'`
@@ -85,12 +85,12 @@ require_once(
 	* Default value: `'EnShort'`
 	
 * `sizePrecision`
-	* Desctription: The number of decimal digits to round to.
+	* Description: The number of decimal digits to round to.
 	* Valid values: `integer`
 	* Default value: `2`
 	
 * `output`
-	* Desctription: File information to output (if `tpl` is not set).
+	* Description: File information to output (if `tpl` is not set).
 	* Valid values:
 		* `'size'`
 		* `'extension'`
@@ -101,7 +101,7 @@ require_once(
 	* Default value: `'size'`
 	
 * `tpl`
-	* Desctription: Output template (if the parameter is absent, file data corresponding to `output` will be returned).  
+	* Description: Output template (if the parameter is absent, file data corresponding to `output` will be returned).  
 		Available placeholders:
 		* `[+file+]` — full file address
 		* `[+name+]` — file name
@@ -125,7 +125,7 @@ require_once(
 	* Default value: —
 	
 * `tpl_placeholders`
-	* Desctription:
+	* Description:
 		Additional data has to be passed into the `tpl`.  
 		Nested objects and arrays are supported too:
 		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
@@ -134,7 +134,7 @@ require_once(
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
