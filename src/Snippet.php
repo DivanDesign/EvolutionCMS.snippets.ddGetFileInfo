@@ -62,7 +62,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.6 (2025-06-17)
+	 * @version 1.0.7 (2025-06-17)
 	 * 
 	 * @return {string}
 	 */
@@ -143,7 +143,7 @@ class Snippet extends \DDTools\Snippet {
 				);
 				
 				// TODO: Использовать класс «SplFileInfo»
-				$snippetResultArray = [
+				$snippetResultObject = (object) [
 					// Полный адрес файла
 					'file' => $this->params->file,
 					// Размер
@@ -177,10 +177,10 @@ class Snippet extends \DDTools\Snippet {
 					// Пробуем получить размер файла
 					$filesize = @filesize($fileFullPathName);
 					
-					$snippetResultArray['typeMime'] =
+					$snippetResultObject->typeMime =
 						// If it's SVG
 						in_array(
-							$snippetResultArray['extension'],
+							$snippetResultObject->extension,
 							[
 								'svg',
 								'svgz',
@@ -196,7 +196,7 @@ class Snippet extends \DDTools\Snippet {
 				// Если вышло
 				if ($filesize !== false){
 					// Формируем строку размера файла
-					$snippetResultArray['size'] = $this->getFileSizeInHumanFormat([
+					$snippetResultObject->size = $this->getFileSizeInHumanFormat([
 						'size' => $filesize,
 						'unitFormat' => $this->params->sizeUnitFormat,
 						'precision' => $this->params->sizePrecision,
@@ -204,15 +204,15 @@ class Snippet extends \DDTools\Snippet {
 				}
 				
 				// Пытаемся определить тип файла
-				$snippetResultArray['type'] = $this->getFileTypeByExtension($snippetResultArray['extension']);
+				$snippetResultObject->type = $this->getFileTypeByExtension($snippetResultObject->extension);
 				
 				// Если есть tpl, то парсим или возвращаем размер
 				if (!empty($this->params->tpl)){
 					// Если есть дополнительные данные
 					if (!empty($this->params->tpl_placeholders)){
-						$snippetResultArray = \DDTools\ObjectTools::extend([
+						$snippetResultObject = \DDTools\ObjectTools::extend([
 							'objects' => [
-								$snippetResultArray,
+								$snippetResultObject,
 								$this->params->tpl_placeholders,
 							],
 						]);
@@ -220,10 +220,10 @@ class Snippet extends \DDTools\Snippet {
 					
 					$result = \ddTools::parseText([
 						'text' => \ddTools::getTpl($this->params->tpl),
-						'data' => $snippetResultArray,
+						'data' => $snippetResultObject,
 					]);
 				}else{
-					$result = $snippetResultArray[$this->params->output];
+					$result = $snippetResultObject->{$this->params->output};
 				}
 			}
 		}
