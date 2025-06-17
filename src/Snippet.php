@@ -62,7 +62,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.5 (2025-06-17)
+	 * @version 1.0.6 (2025-06-17)
 	 * 
 	 * @return {string}
 	 */
@@ -204,76 +204,7 @@ class Snippet extends \DDTools\Snippet {
 				}
 				
 				// Пытаемся определить тип файла
-				switch (strtolower($snippetResultArray['extension'])){
-					case 'zip':
-					case '7z':
-					case 'tar':
-					case 'gz':
-					case 'rar':
-						$snippetResultArray['type'] = 'archive';
-					break;
-					
-					case 'jpg':
-					case 'jpeg':
-					case 'png':
-					case 'gif':
-					case 'bmp':
-					case 'tif':
-					case 'tiff':
-					case 'webp':
-						$snippetResultArray['type'] = 'image';
-					break;
-					
-					case 'webm':
-					case 'mkv':
-					case 'ogv':
-					case 'avi':
-					case 'wmv':
-					case 'flv':
-					case 'mpg':
-					case 'mpeg':
-					case 'mp4':
-					case 'm4v':
-						$snippetResultArray['type'] = 'video';
-					break;
-					
-					case 'flac':
-					case 'ape':
-					case 'wav':
-					case 'aiff':
-					case 'wma':
-					case 'mp3':
-					case 'oga':
-						$snippetResultArray['type'] = 'audio';
-					break;
-					
-					case 'txt':
-						$snippetResultArray['type'] = 'text';
-					break;
-					
-					case 'pdf':
-						$snippetResultArray['type'] = 'pdf';
-					break;
-					
-					case 'doc':
-					case 'docx':
-						$snippetResultArray['type'] = 'word';
-					break;
-					
-					case 'xls':
-					case 'xlsx':
-					case 'xlsm':
-					case 'xlsb':
-						$snippetResultArray['type'] = 'excel';
-					break;
-					
-					case 'ppt':
-					case 'pptx':
-					case 'pps':
-					case 'ppsx':
-						$snippetResultArray['type'] = 'powerpoint';
-					break;
-				}
+				$snippetResultArray['type'] = $this->getFileTypeByExtension($snippetResultArray['extension']);
 				
 				// Если есть tpl, то парсим или возвращаем размер
 				if (!empty($this->params->tpl)){
@@ -386,5 +317,90 @@ class Snippet extends \DDTools\Snippet {
 			)
 			. $mas[$i]
 		;
+	}
+	
+	/**
+	 * getFileTypeByExtension
+	 * @version 1.0.0 (2025-06-17)
+	 * 
+	 * @param $extension {string} — File extension.
+	 * 
+	 * @return {string}
+	 */
+	private function getFileTypeByExtension(string $extension) :string {
+		$result = '';
+		
+		switch (strtolower($extension)){
+			case 'zip':
+			case '7z':
+			case 'tar':
+			case 'gz':
+			case 'rar':
+				$result = 'archive';
+			break;
+			
+			case 'jpg':
+			case 'jpeg':
+			case 'png':
+			case 'gif':
+			case 'bmp':
+			case 'tif':
+			case 'tiff':
+			case 'webp':
+				$result = 'image';
+			break;
+			
+			case 'webm':
+			case 'mkv':
+			case 'ogv':
+			case 'avi':
+			case 'wmv':
+			case 'flv':
+			case 'mpg':
+			case 'mpeg':
+			case 'mp4':
+			case 'm4v':
+				$result = 'video';
+			break;
+			
+			case 'flac':
+			case 'ape':
+			case 'wav':
+			case 'aiff':
+			case 'wma':
+			case 'mp3':
+			case 'oga':
+				$result = 'audio';
+			break;
+			
+			case 'txt':
+				$result = 'text';
+			break;
+			
+			case 'pdf':
+				$result = 'pdf';
+			break;
+			
+			case 'doc':
+			case 'docx':
+				$result = 'word';
+			break;
+			
+			case 'xls':
+			case 'xlsx':
+			case 'xlsm':
+			case 'xlsb':
+				$result = 'excel';
+			break;
+			
+			case 'ppt':
+			case 'pptx':
+			case 'pps':
+			case 'ppsx':
+				$result = 'powerpoint';
+			break;
+		}
+		
+		return $result;
 	}
 }
