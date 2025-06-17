@@ -9,16 +9,13 @@ Displays information about a file: type, mime, size in readable format, path, na
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.60
 
 
-## Documentation
+## Installation
 
 
-### Installation
+### Manually
 
 
-#### Manually
-
-
-##### 1. Elements → Snippets: Create a new snippet with the following data
+#### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetFileInfo`.
 2. Description: `<b>2.5</b> Displays information about a file: type, mime, size in readable format, path, name, extension, etc.`.
@@ -27,13 +24,13 @@ Displays information about a file: type, mime, size in readable format, path, na
 5. Snippet code (php): Insert content of the `ddGetFileInfo_snippet.php` file from the archive.
 
 
-##### 2. Elements → Manage Files
+#### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddGetFileInfo/`.
 2. Extract the archive to the folder (except `ddGetFileInfo_snippet.php`).
 
 
-#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
@@ -54,7 +51,7 @@ require_once(
 * If `ddGetFileInfo` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
-### Parameters description
+## Parameters description
 
 * `file`
 	* Description: File name (path).
@@ -140,10 +137,10 @@ require_once(
 	* Default value: —
 
 
-### Examples
+## Examples
 
 
-#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
 // Include (MODX)EvolutionCMS.libraries.ddTools
